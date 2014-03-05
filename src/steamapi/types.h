@@ -1,0 +1,968 @@
+#ifndef STEAMTRICKER_STEAMAPI_TYPES_H_
+#define STEAMTRICKER_STEAMAPI_TYPES_H_
+
+#include <stdint.h>
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+#define STUB() { fprintf(stderr, "SteamAPI STUB: %s\n", __PRETTY_FUNCTION__); }
+
+typedef uint64_t uint64;
+typedef uint32_t uint32;
+typedef uint16_t uint16;
+typedef uint8_t uint8;
+
+typedef int64_t int64;
+typedef int32_t int32;
+typedef int16_t int16;
+typedef int8_t int8;
+
+typedef uint64 SteamAPICall;
+typedef int32 SteamPipeId;
+typedef int32 SteamUserId;
+typedef uint32 AppId;
+typedef uint32 Time32;
+typedef uint32 NetSocket;
+typedef uint32 NetListenSocket;
+typedef uint32 AuthTicket;
+typedef uint64 SteamLeaderboard;
+typedef uint64 SteamLeaderboardEntries;
+
+typedef int ServerQuery;
+typedef void* ServerListRequest;
+
+const SteamAPICall SteamAPICallInvalid = 0;
+const AppId AppIdInvalid = 0;
+
+extern "C" typedef void (*SteamAPIWarningMessageHook)(int, const char *);
+
+
+enum Result
+{
+	ResultOK = 1,
+	ResultFail = 2,
+	ResultNoConnection = 3,
+	/* removed */
+	ResultInvalidPassword = 5,
+	ResultLoggedInElsewhere = 6,
+	ResultInvalidProtocolVer = 7,
+	ResultInvalidParam = 8,
+	ResultFileNotFound = 9,
+	ResultBusy = 10,
+	ResultInvalidState = 11,
+	ResultInvalidName = 12,
+	ResultInvalidEmail = 13,
+	ResultDuplicateName = 14,
+	ResultAccessDenied = 15,
+	ResultTimeout = 16,
+	ResultBanned = 17,
+	ResultAccountNotFound = 18,
+	ResultInvalidSteamID = 19,
+	ResultServiceUnavailable = 20,
+	ResultNotLoggedOn = 21,
+	ResultPending = 22,
+	ResultEncryptionFailure = 23,
+	ResultInsufficientPrivilege = 24,
+	ResultLimitExceeded = 25,
+	ResultRevoked = 26,
+	ResultExpired = 27,
+	ResultAlreadyRedeemed = 28,
+	ResultDuplicateRequest = 29,
+	ResultAlreadyOwned = 30,
+	ResultIPNotFound = 31,
+	ResultPersistFailed = 32,
+	ResultLockingFailed = 33,
+	ResultLogonSessionReplaced = 34,
+	ResultConnectFailed = 35,
+	ResultHandshakeFailed = 36,
+	ResultIOFailure = 37,
+	ResultRemoteDisconnect = 38,
+	ResultShoppingCartNotFound = 39,
+	ResultBlocked = 40,
+	ResultIgnored = 41,
+	ResultNoMatch = 42,
+	ResultAccountDisabled = 43,
+	ResultServiceReadOnly = 44,
+	ResultAccountNotFeatured = 45,
+	ResultAdministratorOK = 46,
+	ResultContentVersion = 47,
+	ResultTryAnotherCM = 48,
+	ResultPasswordRequiredToKickSession = 49,
+	ResultAlreadyLoggedInElsewhere = 50,
+	ResultSuspended = 51,
+	ResultCancelled = 52,
+	ResultDataCorruption = 53,
+	ResultDiskFull = 54,
+	ResultRemoteCallFailed = 55
+};
+
+enum Universe {
+	UniverseInvalid = 0,
+	UniversePublic = 1,
+	UniverseBeta = 2,
+	UniverseInternal = 3,
+	UniverseDev = 4,
+	UniverseRC = 5,
+	UniverseMax
+};
+
+enum NotificationPosition {
+	PositionTopLeft = 0,
+	PositionTopRight = 1,
+	PositionBottomLeft = 2,
+	PositionBottomRight = 3
+};
+
+enum SteamAPICallFailure {
+	SteamAPICallFailureNone = -1,
+	SteamAPICallFailureSteamGone = 0,
+	SteamAPICallFailureNetworkFailure = 1,
+	SteamAPICallFailureInvalidHandle = 2,
+	SteamAPICallFailureMismatchedCallback = 3
+};
+
+enum ServerMode {
+	ServerModeInvalid = 0,
+	ServerModeNoAuthentication = 1,
+	ServerModeAuthentication = 2,
+	ServerModeAuthenticationAndSecure = 3
+};
+
+enum PersonaState {
+	PersonaStateOffline = 0,
+	PersonaStateOnline = 1,
+	PersonaStateBusy = 2,
+	PersonaStateAway = 3,
+	PersonaStateSnooze = 4,
+	PersonaStateMax
+};
+
+enum AccountType {
+	AccountTypeInvalid = 0,
+	AccountTypeIndividual = 1,
+	AccountTypeMultiseat = 2,
+	AccountTypeGameServer = 3,
+	AccountTypeAnonGameServer = 4,
+	AccountTypePending = 5,
+	AccountTypeContentServer = 6,
+	AccountTypeClan = 7,
+	AccountTypeChat = 8,
+	AccountTypeAnonUser = 10,
+	AccountTypeMax
+};
+
+enum FriendRelationship {
+	FriendRelationshipNone = 0,
+	FriendRelationshipBlocked = 1,
+	FriendRelationshipRequestRecipient = 2,
+	FriendRelationshipFriend = 3,
+	FriendRelationshipRequestInitiator = 4,
+	FriendRelationshipIgnored = 5,
+	FriendRelationshipIgnoredFriend = 6
+};
+
+enum NetSocketConnectionType {
+	NetSocketConnectionTypeNotConnected = 0,
+	NetSocketConnectionTypeUDP = 1,
+	NetSocketConnectionTypeUDPRelay = 2
+};
+
+enum LobbyComparison {
+	LobbyComparisonEqualToOrLessThan = -2,
+	LobbyComparisonLessThan = -1,
+	LobbyComparisonEqual = 0,
+	LobbyComparisonGreaterThan = 1,
+	LobbyComparisonEqualToOrGreaterThan = 2,
+	LobbyComparisonNotEqual = 3
+};
+
+enum LobbyDistanceFilter {
+	LobbyDistanceFilterClose,
+	LobbyDistanceFilterDefault,
+	LobbyDistanceFilterFar,
+	LobbyDistanceFilterWorldwide
+};
+
+enum LobbyType {
+	LobbyTypeFriendsOnly = 1,
+	LobbyTypePublic = 2,
+	LobbyTypeInvisible = 3
+};
+
+enum ChatEntryType {
+	ChatEntryTypeInvalid = 0, 
+	ChatEntryTypeChatMsg = 1,
+	ChatEntryTypeTyping = 2,
+	ChatEntryTypeInviteGame = 3,
+	ChatEntryTypeEmote = 4,
+	ChatEntryTypeLobbyGameStart = 5,
+	ChatEntryTypeLeftConversation = 6
+};
+
+enum GameCoordResult {
+	GameCoordResultOK = 0,
+	GameCoordResultNoMessage = 1,
+	GameCoordResultBufferTooSmall = 2,
+	GameCoordResultNotLoggedOn = 3,
+	GameCoordResultInvalidMessage = 4
+};
+
+enum UserHasLicenseForAppResult
+{
+	UserHasLicenseResultHasLicense = 0,
+	UserHasLicenseResultDoesNotHaveLicense = 1,
+	UserHasLicenseResultNoAuth = 2
+};
+
+enum MatchMakingServerResponse
+{
+	ServerResponded = 0,
+	ServerFailedToRespond,
+	NoServersListedOnMasterServer
+};
+
+enum VoiceResult {
+	VoiceResultOK = 0,
+	VoiceResultNotInitialized = 1,
+	VoiceResultNotRecording = 2,
+	VoiceResultNoData = 3,
+	VoiceResultBufferTooSmall = 4,
+	VoiceResultDataCorrupted = 5
+};
+
+enum BeginAuthSessionResult {
+	BeginAuthSessionResultOK = 0,
+	BeginAuthSessionResultInvalidTicket = 1,
+	BeginAuthSessionResultDuplicateRequest = 2,
+	BeginAuthSessionResultInvalidVersion = 3,
+	BeginAuthSessionResultGameMismatch = 4,
+	BeginAuthSessionResultExpiredTicket = 5
+};
+
+enum LeaderboardDataRequest {
+	LeaderboardDataRequestGlobal = 0,
+	LeaderboardDataRequestGlobalAroundUser = 1,
+	LeaderboardDataRequestFriends = 2
+};
+
+enum LeaderboardSortMethod {
+	LeaderboardSortMethodNone = 0,
+	LeaderboardSortMethodAscending = 1,
+	LeaderboardSortMethodDescending = 2
+};
+
+enum LeaderboardDisplayType {
+	LeaderboardDisplayTypeNone = 0, 
+	LeaderboardDisplayTypeNumeric = 1,
+	LeaderboardDisplayTypeTimeSeconds = 2,
+	LeaderboardDisplayTypeTimeMilliSeconds = 3
+};
+
+enum LeaderboardUploadScoreMethod {
+	LeaderboardUploadScoreMethodNone = 0,
+	LeaderboardUploadScoreMethodKeepBest = 1,
+	LeaderboardUploadScoreMethodForceUpdate = 2
+};
+
+enum P2PSendType {
+	P2PSendUnreliable = 0,
+	P2PSendUnreliableNoDelay = 1,
+	P2PSendReliable = 2,
+	P2PSendReliableWithBuffering = 3
+};
+
+const int SteamAccountInstanceMask = 0x000FFFFF;
+enum ChatSteamIDInstanceFlags {
+	ChatAccountInstanceMask = 0x00000FFF,
+	ChatInstanceFlagClan = ( SteamAccountInstanceMask + 1 ) >> 1,
+	ChatInstanceFlagLobby = ( SteamAccountInstanceMask + 1 ) >> 2,
+	ChatInstanceFlagMMSLobby = ( SteamAccountInstanceMask + 1 ) >> 3
+};
+
+
+#pragma pack(push, 1)
+
+class CSteamID {
+public:
+	CSteamID() {
+		mSteamid.mComp.mAccountID = 0;
+		mSteamid.mComp.mAccountType = AccountTypeInvalid;
+		mSteamid.mComp.mUniverse = UniverseInvalid;
+		mSteamid.mComp.mAccountInstance = 0;
+	}
+
+	CSteamID(uint32 accountID, Universe universe, AccountType accountType)
+	{
+		Set(accountID, universe, accountType);
+	}
+
+	CSteamID(uint32 accountID,
+		 unsigned int accountInstance,
+		 Universe universe,
+		 AccountType accountType)
+	{
+		InstancedSet(accountID, accountInstance, universe, accountType);
+	}
+
+	CSteamID(uint64 steamID)
+	{
+		SetFromUint64(steamID);
+	}
+
+	void Set(uint32 accountID, Universe universe, AccountType accountType)
+	{
+		mSteamid.mComp.mAccountID = accountID;
+		mSteamid.mComp.mUniverse = universe;
+		mSteamid.mComp.mAccountType = accountType;
+		mSteamid.mComp.mAccountInstance = !(accountType == AccountTypeClan);
+	}
+
+	void InstancedSet(uint32 accountID,
+			  uint32 instance,
+			  Universe universe,
+			  AccountType accountType)
+	{
+		mSteamid.mComp.mAccountID = accountID;
+		mSteamid.mComp.mUniverse = universe;
+		mSteamid.mComp.mAccountType = accountType;
+		mSteamid.mComp.mAccountInstance = instance;
+	}
+
+	void FullSet(uint64 identifier, Universe universe, AccountType accountType)
+	{
+		mSteamid.mComp.mAccountID = (identifier & 0xFFFFFFFF);
+		mSteamid.mComp.mAccountInstance = ( (identifier >> 32 ) & 0xFFFFF );
+		mSteamid.mComp.mUniverse = universe;
+		mSteamid.mComp.mAccountType = accountType;
+	}
+
+	void SetFromUint64(uint64 steamID)
+	{
+		mSteamid.mAll64Bits = steamID;
+	}
+
+	uint64 ConvertToUint64() const
+	{
+		return mSteamid.mAll64Bits;
+	}
+
+	uint64 GetStaticAccountKey() const
+	{
+		return (uint64) ( (((uint64) mSteamid.mComp.mUniverse) << 56) +
+				  ((uint64) mSteamid.mComp.mAccountType << 52 ) + 
+				  mSteamid.mComp.mAccountID );
+	}
+
+	void CreateBlankAnonLogon(Universe universe)
+	{
+		mSteamid.mComp.mAccountID = 0;
+		mSteamid.mComp.mAccountType = AccountTypeAnonGameServer;
+		mSteamid.mComp.mUniverse = universe;
+		mSteamid.mComp.mAccountInstance = 0;
+	}
+
+	void CreateBlankAnonUserLogon(Universe universe)
+	{
+		mSteamid.mComp.mAccountID = 0;
+		mSteamid.mComp.mAccountType = AccountTypeAnonUser;
+		mSteamid.mComp.mUniverse = universe;
+		mSteamid.mComp.mAccountInstance = 0;
+	}
+
+	bool BBlankAnonAccount() const
+	{
+		return mSteamid.mComp.mAccountID == 0 &&
+		       BAnonAccount() &&
+		       mSteamid.mComp.mAccountInstance == 0;
+	}
+
+	bool BGameServerAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeGameServer ||
+		       mSteamid.mComp.mAccountType == AccountTypeAnonGameServer;
+	}
+
+	bool BContentServerAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeContentServer;
+	}
+
+	bool BClanAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeClan;
+	}
+
+	bool BChatAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeChat;
+	}
+
+	bool IsLobby() const
+	{
+		return ( mSteamid.mComp.mAccountType == AccountTypeChat) &&
+		       ( mSteamid.mComp.mAccountInstance & ChatInstanceFlagLobby);
+	}
+
+	bool BIndividualAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeIndividual;
+	}
+
+	bool BAnonAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeAnonUser ||
+		       mSteamid.mComp.mAccountType == AccountTypeAnonGameServer;
+	}
+
+	bool BAnonUserAccount() const
+	{
+		return mSteamid.mComp.mAccountType == AccountTypeAnonUser;
+	}
+
+	void SetAccountID(uint32 accountID)
+	{
+		mSteamid.mComp.mAccountID = accountID;
+	}
+
+	uint32 GetAccountID() const {
+		return mSteamid.mComp.mAccountID;
+	}
+
+	uint32 GetUnAccountInstance() const {
+		return mSteamid.mComp.mAccountInstance;
+	}
+
+	AccountType GetEAccountType() const {
+		return (AccountType) mSteamid.mComp.mAccountType;
+	}
+
+	Universe GetEUniverse() const {
+		return mSteamid.mComp.mUniverse;
+	}
+
+	void SetEUniverse(Universe universe) {
+		mSteamid.mComp.mUniverse = universe;
+	}
+
+	bool IsValid() const;
+
+	explicit CSteamID(const char *steamID, Universe defaultUniverse = UniverseInvalid)
+	{
+		if (steamID == NULL)
+			return;
+
+		int server = 0;
+		int authID = 0;
+		char authIDStr[ 64 ];
+
+		strncpy(authIDStr, steamID, 63);
+
+		char *tmp = strtok(authIDStr, ":");
+		while((tmp = strtok(NULL, ":"))) {
+			char *tmp2 = strtok(NULL, ":");
+			if(tmp2) {
+				server = atoi(tmp);
+				authID = atoi(tmp2);
+			}
+		}
+
+		if(authID == 0)
+			return;
+
+		uint64 friendID = (uint64)authID * 2;
+		friendID += 76561197960265728 + server;
+
+		SetFromUint64(friendID);
+	}
+
+	const char * Render() const
+	{
+		static char steamIDStr[64];
+		switch(mSteamid.mComp.mAccountType) {
+			case AccountTypeInvalid:
+			case AccountTypeIndividual:
+				snprintf(steamIDStr,
+					  sizeof(steamIDStr),
+					  "STEAM_0:%u:%u",
+					  (mSteamid.mComp.mAccountID % 2) ? 1 : 0,
+					  (int32)mSteamid.mComp.mAccountID/2);
+				break;
+			default:
+				snprintf(steamIDStr,
+					  sizeof(steamIDStr),
+					  "%llu",
+					  ConvertToUint64());
+		}
+		return steamIDStr;
+	}
+
+	static const char * Render(uint64 steamID)
+	{
+		return CSteamID(steamID).Render();
+	}
+
+	void SetFromString(const char *steamID, Universe defaultUniverse);
+	bool SetFromSteam2String(const char *steam2ID, Universe universe);
+
+	inline bool operator==(const CSteamID &val) const
+	{
+		return mSteamid.mAll64Bits == val.mSteamid.mAll64Bits;
+	} 
+
+	inline bool operator!=(const CSteamID &val) const
+	{
+		return !operator==(val);
+	}
+
+	inline bool operator<(const CSteamID &val) const {
+		return mSteamid.mAll64Bits < val.mSteamid.mAll64Bits;
+	}
+
+	inline bool operator>(const CSteamID &val) const {
+		return mSteamid.mAll64Bits > val.mSteamid.mAll64Bits;
+	}
+
+	bool BValidExternalSteamID() const;
+
+private:
+	CSteamID(uint32);
+	CSteamID(int32);
+
+	union SteamID
+	{
+		struct SteamIDComponent
+		{
+			uint32 mAccountID : 32;
+			unsigned int mAccountInstance : 20;
+			unsigned int mAccountType : 4;
+			Universe mUniverse : 8;
+		} mComp;
+
+		uint64 mAll64Bits;
+	} mSteamid;
+};
+
+const CSteamID steamIDNil;
+const CSteamID steamIDOutofDateGS(0, 0, UniverseInvalid, AccountTypeInvalid);
+const CSteamID steamIDLanModeGS(0, 0, UniversePublic, AccountTypeInvalid);
+const CSteamID steamIDNotInitYetGS(1, 0, UniverseInvalid, AccountTypeInvalid);
+const CSteamID steamIDNonSteamGS(2, 0, UniverseInvalid, AccountTypeInvalid);
+
+inline bool CSteamID::IsValid() const
+{
+	if(mSteamid.mComp.mAccountType <= AccountTypeInvalid ||
+	   mSteamid.mComp.mAccountType >= AccountTypeMax)
+		return false;
+	
+	if(mSteamid.mComp.mUniverse <= UniverseInvalid ||
+	   mSteamid.mComp.mUniverse >= UniverseMax)
+		return false;
+
+	if(mSteamid.mComp.mAccountType == AccountTypeIndividual) {
+		if(mSteamid.mComp.mAccountID == 0 ||
+		   mSteamid.mComp.mAccountInstance != 1)
+			return false;
+	}
+
+	if(mSteamid.mComp.mAccountType == AccountTypeClan) {
+		if(mSteamid.mComp.mAccountID == 0 ||
+		   mSteamid.mComp.mAccountInstance != 0)
+			return false;
+	}
+
+	return true;
+}
+
+
+class CGameID
+{
+public:
+
+	CGameID()
+	{
+		mGameID.mType = GameIDTypeApp;
+		mGameID.mAppID = AppIdInvalid;
+		mGameID.mModID = 0;
+	}
+
+	explicit CGameID(uint64 gameID)
+	{
+		mGameIDAll = gameID;
+	}
+
+	explicit CGameID(int32 appID)
+	{
+		mGameIDAll = 0;
+		mGameID.mAppID = appID;
+	}
+
+	explicit CGameID(uint32 appID)
+	{
+		mGameIDAll = 0;
+		mGameID.mAppID = appID;
+	}
+
+	CGameID(uint32 appID, uint32 modID)
+	{
+		mGameIDAll = 0;
+		mGameID.mAppID = appID;
+		mGameID.mModID = modID;
+		mGameID.mType = GameIDTypeGameMod;
+	}
+
+	explicit CGameID(const char *pchGameID);
+
+	const char *Render() const;
+
+	static const char *Render( uint64 ulGameID );
+
+	uint64 ToUint64() const
+	{
+		return mGameIDAll;
+	}
+
+	uint64 *GetUint64Ptr()
+	{
+		return &mGameIDAll;
+	}
+
+	bool IsMod() const
+	{
+		return (mGameID.mType == GameIDTypeGameMod);
+	}
+
+	bool IsShortcut() const
+	{
+		return (mGameID.mType == GameIDTypeShortcut);
+	}
+
+	bool IsP2PFile() const
+	{
+		return (mGameID.mType == GameIDTypeP2P);
+	}
+
+	bool IsSteamApp() const
+	{
+		return (mGameID.mType == GameIDTypeApp);
+	}
+
+	uint32 ModID() const
+	{
+		return mGameID.mModID;
+	}
+
+	uint32 AppID() const
+	{
+		return mGameID.mAppID;
+	}
+
+	bool operator == (const CGameID &rhs) const
+	{
+		return mGameIDAll == rhs.mGameIDAll;
+	}
+
+	bool operator != (const CGameID &rhs) const
+	{
+		return !operator==(rhs);
+	}
+
+	bool operator < (const CGameID &rhs) const
+	{
+		return (mGameIDAll < rhs.mGameIDAll );
+	}
+
+	bool IsValid() const
+	{
+		switch(mGameID.mType)
+		{
+		case GameIDTypeApp:
+			return mGameID.mAppID != AppIdInvalid;
+		case GameIDTypeGameMod:
+			return mGameID.mAppID != AppIdInvalid &&
+			       mGameID.mModID & 0x80000000;
+		case GameIDTypeShortcut:
+			return (mGameID.mModID & 0x80000000) != 0;
+		case GameIDTypeP2P:
+			return mGameID.mAppID == AppIdInvalid &&
+			       mGameID.mModID & 0x80000000;
+		default:
+			return false;
+		}
+
+	}
+
+	void Reset() 
+	{
+		mGameIDAll = 0;
+	}
+
+private:
+	enum GameIDType
+	{
+		GameIDTypeApp = 0,
+		GameIDTypeGameMod = 1,
+		GameIDTypeShortcut = 2,
+		GameIDTypeP2P = 3
+	};
+
+	struct GameID
+	{
+		unsigned int mAppID : 24;
+		unsigned int mType : 8;
+		unsigned int mModID : 32;
+	};
+
+	union
+	{
+		uint64 mGameIDAll;
+		GameID mGameID;
+	};
+};
+
+#pragma pack(push, 8)
+struct P2PSessionState {
+	uint8 mConnectionActive;
+	uint8 mConnecting;
+	uint8 mP2PSessionError;
+	uint8 mUsingRelay;
+	int32 mBytesQueuedForSend;
+	int32 mPacketsQueuedForSend;
+	uint32 mRemoteIP;
+	uint16 mRemotePort;
+};
+
+struct FriendGameInfo {
+	CGameID mGameID;
+	uint32 mGameIP;
+	uint16 mGamePort;
+	uint16 mQueryPort;
+	CSteamID mSteamIDLobby;
+};
+
+struct LeaderboardEntry {
+	CSteamID mSteamIDUser;
+	int32 mGlobalRank;
+	int32 mScore;
+	int32 mDetails;
+};
+
+#pragma pack(pop)
+
+class CallbackBase {
+public:
+	CallbackBase() {
+		mCallbackFlags = 0;
+		mCallback = 0;
+	}
+
+	virtual void Run(void *param) = 0;
+	virtual void Run(void *param, bool IOFailure, SteamAPICall steamAPICall) = 0;
+	virtual int GetCallbackSizeBytes() = 0;
+	int GetICallback() {
+		return mCallback;
+	}
+
+protected:
+	enum {
+		CallbackFlagsRegistered = 1,
+		CallbackFlagsGameServer = 2
+	};
+	uint8 mCallbackFlags;
+	int mCallback;
+	friend class CCallbackMgr;
+};
+
+struct MatchMakingKeyValuePair_t
+{
+	MatchMakingKeyValuePair_t() { m_szKey[0] = m_szValue[0] = 0; }
+	MatchMakingKeyValuePair_t( const char *pchKey, const char *pchValue )
+	{
+		strncpy( m_szKey, pchKey, sizeof(m_szKey) ); // this is a public header, use basic c library string funcs only!
+		strncpy( m_szValue, pchValue, sizeof(m_szValue) );
+	}
+	char m_szKey[ 256 ];
+	char m_szValue[ 256 ];
+};
+
+struct MatchMakingKeyValuePair {
+	MatchMakingKeyValuePair()
+	{
+		mKey[0] = 0;
+		mValue[0] = 0;
+	}
+
+	MatchMakingKeyValuePair(const char *key, const char *value)
+	{
+		strncpy(mKey, key, sizeof(mKey));
+		strncpy(mValue, value, sizeof(mValue));
+	}
+
+	char mKey[256];
+	char mValue[256];
+};
+
+class ServerNetAddr {
+public:
+	void Init(unsigned int ip, uint16 queryPort, uint16 connectionPort)
+	{
+		mIP = ip;
+		mQueryPort = queryPort;
+		mConnectionPort = connectionPort;
+	}
+
+	uint16 GetQueryPort() const
+	{
+		return mQueryPort;
+	}
+
+	void SetQueryPort(uint16 port)
+	{
+		mQueryPort = port;
+	}
+
+	uint16 GetConnectionPort() const
+	{
+		return mConnectionPort;
+	}
+
+	void SetConnectionPort(uint16 port)
+	{
+		mConnectionPort = port;
+	}
+
+	uint32 GetIP() const
+	{
+		return mIP;
+	}
+
+	void SetIP(uint32 ip)
+	{
+		mIP = ip;
+	}
+
+	const char *GetConnectionAddressString() const
+	{
+		return ToString(mIP, mConnectionPort);
+	}
+
+	const char *GetQueryAddressString() const
+	{
+		return ToString(mIP, mQueryPort);
+	}
+
+	bool operator<(const ServerNetAddr &netadr) const
+	{
+		return (mIP < netadr.mIP) ||
+		       (mIP == netadr.mIP && mQueryPort < netadr.mQueryPort);
+	}
+
+	void operator=(const ServerNetAddr &that)
+	{
+		mConnectionPort = that.mConnectionPort;
+		mQueryPort = that.mQueryPort;
+		mIP = that.mIP;
+	}
+
+private:
+	const char *ToString(uint32 ip, uint16 port) const
+	{
+		static char s[4][64];
+		static int buf = 0;
+		unsigned char *byte = (unsigned char *)&ip;
+		snprintf(s[buf],
+			 sizeof(s[buf]),
+			 "%u.%u.%u.%u:%i",
+			 (int)(byte[3]),
+			 (int)(byte[2]),
+			 (int)(byte[1]),
+			 (int)(byte[0]),
+			 port);
+		const char *ret = s[buf];
+		++buf;
+		buf %= ((sizeof(s)/sizeof(s[0])));
+		return ret;
+	}
+
+	uint16 mConnectionPort;
+	uint16 mQueryPort;
+	uint32 mIP;
+};
+
+// FIXME
+class GameServerItem {
+public:
+	GameServerItem();
+
+	const char* GetName() const;
+	void SetName(const char *name);
+
+	ServerNetAddr m_NetAdr;
+	int m_nPing;
+	bool m_bHadSuccessfulResponse;
+	bool m_bDoNotRefresh;
+	char m_szGameDir[32];
+	char m_szMap[32];
+	char m_szGameDescription[64];
+	uint32 m_nAppID;
+	int m_nPlayers;	
+	int m_nMaxPlayers;
+	int m_nBotPlayers;
+	bool m_bPassword;
+	bool m_bSecure;
+	uint32 m_ulTimeLastPlayed;
+	int m_nServerVersion;
+
+private:
+	char m_szServerName[64];
+
+public:
+	char m_szGameTags[128];
+	CSteamID m_steamID;
+};
+
+class ISteamMatchmakingServerListResponse {
+public:
+	virtual void ServerResponded(ServerListRequest request,
+				     int server) = 0;
+
+	virtual void ServerFailedToRespond(ServerListRequest request,
+					   int server) = 0;
+ 
+	virtual void RefreshComplete(ServerListRequest request,
+				     MatchMakingServerResponse response) = 0;
+};
+
+class ISteamMatchmakingPlayersResponse
+{
+public:
+	virtual void AddPlayerToList(const char *name,
+				     int score,
+				     float timePlayed) = 0;
+
+	virtual void PlayersFailedToRespond() = 0;
+
+	virtual void PlayersRefreshComplete() = 0;
+};
+
+class ISteamMatchmakingPingResponse
+{
+public:
+	virtual void ServerResponded(GameServerItem &server) = 0;
+
+	virtual void ServerFailedToRespond() = 0;
+};
+
+class ISteamMatchmakingRulesResponse
+{
+public:
+	virtual void RulesResponded(const char *rule, const char *value ) = 0;
+
+	virtual void RulesFailedToRespond() = 0;
+
+	virtual void RulesRefreshComplete() = 0;
+};
+
+#pragma pack(pop)
+
+#endif /* STEAMTRICKER_STEAMAPI_TYPES_H_ */
