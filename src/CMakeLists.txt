@@ -4,11 +4,11 @@ include_directories(${PROJECT_SOURCE_DIR}/src)
 
 # general c compiler settings
 set(CMAKE_C_FLAGS
-	"-m32 -fPIC -Wall -Wextra -Werror -Wshadow -fvisibility=hidden")
+	"-fPIC -Wall -Wextra -Werror -Wshadow -fvisibility=hidden")
 
 # general cpp compiler settings
 set(CMAKE_CXX_FLAGS
-	"-m32 -fPIC -std=gnu++98 -Wall -Wextra -Werror -Wshadow -fvisibility=hidden -Wno-unused-parameter")
+	"-fPIC -std=gnu++98 -Wall -Wextra -Werror -Wshadow -fvisibility=hidden -Wno-unused-parameter")
 
 # build steamapi
 add_subdirectory(steamapi)

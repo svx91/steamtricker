@@ -5,6 +5,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <inttypes.h>
 
 #define STUB() { fprintf(stderr, "SteamAPI STUB: %s\n", __PRETTY_FUNCTION__); }
 
@@ -272,6 +273,37 @@ enum P2PSendType {
 	P2PSendReliableWithBuffering = 3
 };
 
+enum DenyReason {
+	DenyInvalid = 0,
+	DenyInvalidVersion = 1,
+	DenyGeneric = 2,
+	DenyNotLoggedOn = 3,
+	DenyNoLicense = 4,
+	DenyCheater = 5,
+	DenyLoggedInElseWhere = 6,
+	DenyUnknownText = 7,
+	DenyIncompatibleAnticheat = 8,
+	DenyMemoryCorruption = 9,
+	DenyIncompatibleSoftware = 10,
+	DenySteamConnectionLost = 11,
+	DenySteamConnectionError = 12,
+	DenySteamResponseTimedOut = 13,
+	DenySteamValidationStalled = 14,
+	DenySteamOwnerLeftGuestUser = 15
+};
+
+enum AuthSessionResponse {
+	AuthSessionResponseOK = 0,
+	AuthSessionResponseUserNotConnectedToSteam = 1,
+	AuthSessionResponseNoLicenseOrExpired = 2,
+	AuthSessionResponseVACBanned = 3,
+	AuthSessionResponseLoggedInElseWhere = 4,
+	AuthSessionResponseVACCheckTimedOut = 5,
+	AuthSessionResponseAuthTicketCanceled = 6,
+	AuthSessionResponseAuthTicketInvalidAlreadyUsed = 7,
+	AuthSessionResponseAuthTicketInvalid = 8
+};
+
 const int SteamAccountInstanceMask = 0x000FFFFF;
 enum ChatSteamIDInstanceFlags {
 	ChatAccountInstanceMask = 0x00000FFF,
@@ -282,7 +314,6 @@ enum ChatSteamIDInstanceFlags {
 
 
 #pragma pack(push, 1)
-
 class CSteamID {
 public:
 	CSteamID() {
@@ -491,7 +522,7 @@ public:
 			default:
 				snprintf(steamIDStr,
 					  sizeof(steamIDStr),
-					  "%llu",
+					  "%"PRIu64,
 					  ConvertToUint64());
 		}
 		return steamIDStr;
@@ -543,12 +574,6 @@ private:
 	} mSteamid;
 };
 
-const CSteamID steamIDNil;
-const CSteamID steamIDOutofDateGS(0, 0, UniverseInvalid, AccountTypeInvalid);
-const CSteamID steamIDLanModeGS(0, 0, UniversePublic, AccountTypeInvalid);
-const CSteamID steamIDNotInitYetGS(1, 0, UniverseInvalid, AccountTypeInvalid);
-const CSteamID steamIDNonSteamGS(2, 0, UniverseInvalid, AccountTypeInvalid);
-
 inline bool CSteamID::IsValid() const
 {
 	if(mSteamid.mComp.mAccountType <= AccountTypeInvalid ||
@@ -573,7 +598,6 @@ inline bool CSteamID::IsValid() const
 
 	return true;
 }
-
 
 class CGameID
 {
@@ -719,6 +743,7 @@ private:
 		GameID mGameID;
 	};
 };
+#pragma pack(pop)
 
 #pragma pack(push, 8)
 struct P2PSessionState {
@@ -746,223 +771,9 @@ struct LeaderboardEntry {
 	int32 mScore;
 	int32 mDetails;
 };
-
 #pragma pack(pop)
 
-class CallbackBase {
-public:
-	CallbackBase() {
-		mCallbackFlags = 0;
-		mCallback = 0;
-	}
 
-	virtual void Run(void *param) = 0;
-	virtual void Run(void *param, bool IOFailure, SteamAPICall steamAPICall) = 0;
-	virtual int GetCallbackSizeBytes() = 0;
-	int GetICallback() {
-		return mCallback;
-	}
-
-protected:
-	enum {
-		CallbackFlagsRegistered = 1,
-		CallbackFlagsGameServer = 2
-	};
-	uint8 mCallbackFlags;
-	int mCallback;
-	friend class CCallbackMgr;
-};
-
-struct MatchMakingKeyValuePair_t
-{
-	MatchMakingKeyValuePair_t() { m_szKey[0] = m_szValue[0] = 0; }
-	MatchMakingKeyValuePair_t( const char *pchKey, const char *pchValue )
-	{
-		strncpy( m_szKey, pchKey, sizeof(m_szKey) ); // this is a public header, use basic c library string funcs only!
-		strncpy( m_szValue, pchValue, sizeof(m_szValue) );
-	}
-	char m_szKey[ 256 ];
-	char m_szValue[ 256 ];
-};
-
-struct MatchMakingKeyValuePair {
-	MatchMakingKeyValuePair()
-	{
-		mKey[0] = 0;
-		mValue[0] = 0;
-	}
-
-	MatchMakingKeyValuePair(const char *key, const char *value)
-	{
-		strncpy(mKey, key, sizeof(mKey));
-		strncpy(mValue, value, sizeof(mValue));
-	}
-
-	char mKey[256];
-	char mValue[256];
-};
-
-class ServerNetAddr {
-public:
-	void Init(unsigned int ip, uint16 queryPort, uint16 connectionPort)
-	{
-		mIP = ip;
-		mQueryPort = queryPort;
-		mConnectionPort = connectionPort;
-	}
-
-	uint16 GetQueryPort() const
-	{
-		return mQueryPort;
-	}
-
-	void SetQueryPort(uint16 port)
-	{
-		mQueryPort = port;
-	}
-
-	uint16 GetConnectionPort() const
-	{
-		return mConnectionPort;
-	}
-
-	void SetConnectionPort(uint16 port)
-	{
-		mConnectionPort = port;
-	}
-
-	uint32 GetIP() const
-	{
-		return mIP;
-	}
-
-	void SetIP(uint32 ip)
-	{
-		mIP = ip;
-	}
-
-	const char *GetConnectionAddressString() const
-	{
-		return ToString(mIP, mConnectionPort);
-	}
-
-	const char *GetQueryAddressString() const
-	{
-		return ToString(mIP, mQueryPort);
-	}
-
-	bool operator<(const ServerNetAddr &netadr) const
-	{
-		return (mIP < netadr.mIP) ||
-		       (mIP == netadr.mIP && mQueryPort < netadr.mQueryPort);
-	}
-
-	void operator=(const ServerNetAddr &that)
-	{
-		mConnectionPort = that.mConnectionPort;
-		mQueryPort = that.mQueryPort;
-		mIP = that.mIP;
-	}
-
-private:
-	const char *ToString(uint32 ip, uint16 port) const
-	{
-		static char s[4][64];
-		static int buf = 0;
-		unsigned char *byte = (unsigned char *)&ip;
-		snprintf(s[buf],
-			 sizeof(s[buf]),
-			 "%u.%u.%u.%u:%i",
-			 (int)(byte[3]),
-			 (int)(byte[2]),
-			 (int)(byte[1]),
-			 (int)(byte[0]),
-			 port);
-		const char *ret = s[buf];
-		++buf;
-		buf %= ((sizeof(s)/sizeof(s[0])));
-		return ret;
-	}
-
-	uint16 mConnectionPort;
-	uint16 mQueryPort;
-	uint32 mIP;
-};
-
-// FIXME
-class GameServerItem {
-public:
-	GameServerItem();
-
-	const char* GetName() const;
-	void SetName(const char *name);
-
-	ServerNetAddr m_NetAdr;
-	int m_nPing;
-	bool m_bHadSuccessfulResponse;
-	bool m_bDoNotRefresh;
-	char m_szGameDir[32];
-	char m_szMap[32];
-	char m_szGameDescription[64];
-	uint32 m_nAppID;
-	int m_nPlayers;	
-	int m_nMaxPlayers;
-	int m_nBotPlayers;
-	bool m_bPassword;
-	bool m_bSecure;
-	uint32 m_ulTimeLastPlayed;
-	int m_nServerVersion;
-
-private:
-	char m_szServerName[64];
-
-public:
-	char m_szGameTags[128];
-	CSteamID m_steamID;
-};
-
-class ISteamMatchmakingServerListResponse {
-public:
-	virtual void ServerResponded(ServerListRequest request,
-				     int server) = 0;
-
-	virtual void ServerFailedToRespond(ServerListRequest request,
-					   int server) = 0;
- 
-	virtual void RefreshComplete(ServerListRequest request,
-				     MatchMakingServerResponse response) = 0;
-};
-
-class ISteamMatchmakingPlayersResponse
-{
-public:
-	virtual void AddPlayerToList(const char *name,
-				     int score,
-				     float timePlayed) = 0;
-
-	virtual void PlayersFailedToRespond() = 0;
-
-	virtual void PlayersRefreshComplete() = 0;
-};
-
-class ISteamMatchmakingPingResponse
-{
-public:
-	virtual void ServerResponded(GameServerItem &server) = 0;
-
-	virtual void ServerFailedToRespond() = 0;
-};
-
-class ISteamMatchmakingRulesResponse
-{
-public:
-	virtual void RulesResponded(const char *rule, const char *value ) = 0;
-
-	virtual void RulesFailedToRespond() = 0;
-
-	virtual void RulesRefreshComplete() = 0;
-};
-
-#pragma pack(pop)
+#include "callbacks.h"
 
 #endif /* STEAMTRICKER_STEAMAPI_TYPES_H_ */

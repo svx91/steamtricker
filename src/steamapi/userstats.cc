@@ -157,7 +157,6 @@ const char *CSteamUserStats::GetLeaderboardName(SteamLeaderboard steamLeaderboar
 	STUB();
 	return NULL;
 }
-
 int CSteamUserStats::GetLeaderboardEntryCount(SteamLeaderboard steamLeaderboard)
 {
 	STUB();

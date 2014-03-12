@@ -3,6 +3,184 @@
 
 #include "types.h"
 
+class MatchMakingKeyValuePair {
+public:
+	MatchMakingKeyValuePair()
+	{
+		mKey[0] = 0;
+		mValue[0] = 0;
+	}
+
+	MatchMakingKeyValuePair(const char *key, const char *value)
+	{
+		strncpy(mKey, key, sizeof(mKey));
+		strncpy(mValue, value, sizeof(mValue));
+	}
+
+	char mKey[256];
+	char mValue[256];
+};
+
+class ServerNetAddr {
+public:
+	void Init(unsigned int ip, uint16 queryPort, uint16 connectionPort)
+	{
+		mIP = ip;
+		mQueryPort = queryPort;
+		mConnectionPort = connectionPort;
+	}
+
+	uint16 GetQueryPort() const
+	{
+		return mQueryPort;
+	}
+
+	void SetQueryPort(uint16 port)
+	{
+		mQueryPort = port;
+	}
+
+	uint16 GetConnectionPort() const
+	{
+		return mConnectionPort;
+	}
+
+	void SetConnectionPort(uint16 port)
+	{
+		mConnectionPort = port;
+	}
+
+	uint32 GetIP() const
+	{
+		return mIP;
+	}
+
+	void SetIP(uint32 ip)
+	{
+		mIP = ip;
+	}
+
+	const char *GetConnectionAddressString() const
+	{
+		return ToString(mIP, mConnectionPort);
+	}
+
+	const char *GetQueryAddressString() const
+	{
+		return ToString(mIP, mQueryPort);
+	}
+
+	bool operator<(const ServerNetAddr &netadr) const
+	{
+		return (mIP < netadr.mIP) ||
+		       (mIP == netadr.mIP && mQueryPort < netadr.mQueryPort);
+	}
+
+	void operator=(const ServerNetAddr &that)
+	{
+		mConnectionPort = that.mConnectionPort;
+		mQueryPort = that.mQueryPort;
+		mIP = that.mIP;
+	}
+
+private:
+	const char *ToString(uint32 ip, uint16 port) const
+	{
+		static char s[4][64];
+		static int buf = 0;
+		unsigned char *byte = (unsigned char *)&ip;
+		snprintf(s[buf],
+			 sizeof(s[buf]),
+			 "%u.%u.%u.%u:%i",
+			 (int)(byte[3]),
+			 (int)(byte[2]),
+			 (int)(byte[1]),
+			 (int)(byte[0]),
+			 port);
+		const char *ret = s[buf];
+		++buf;
+		buf %= ((sizeof(s)/sizeof(s[0])));
+		return ret;
+	}
+
+	uint16 mConnectionPort;
+	uint16 mQueryPort;
+	uint32 mIP;
+};
+
+// FIXME
+class GameServerItem {
+public:
+	GameServerItem();
+
+	const char* GetName() const;
+	void SetName(const char *name);
+
+	ServerNetAddr m_NetAdr;
+	int m_nPing;
+	bool m_bHadSuccessfulResponse;
+	bool m_bDoNotRefresh;
+	char m_szGameDir[32];
+	char m_szMap[32];
+	char m_szGameDescription[64];
+	uint32 m_nAppID;
+	int m_nPlayers;
+	int m_nMaxPlayers;
+	int m_nBotPlayers;
+	bool m_bPassword;
+	bool m_bSecure;
+	uint32 m_ulTimeLastPlayed;
+	int m_nServerVersion;
+
+private:
+	char m_szServerName[64];
+
+public:
+	char m_szGameTags[128];
+	CSteamID m_steamID;
+};
+
+class ISteamMatchmakingServerListResponse {
+public:
+	virtual void ServerResponded(ServerListRequest request,
+				     int server) = 0;
+
+	virtual void ServerFailedToRespond(ServerListRequest request,
+					   int server) = 0;
+
+	virtual void RefreshComplete(ServerListRequest request,
+				     MatchMakingServerResponse response) = 0;
+};
+
+class ISteamMatchmakingPlayersResponse
+{
+public:
+	virtual void AddPlayerToList(const char *name,
+				     int score,
+				     float timePlayed) = 0;
+
+	virtual void PlayersFailedToRespond() = 0;
+
+	virtual void PlayersRefreshComplete() = 0;
+};
+
+class ISteamMatchmakingPingResponse
+{
+public:
+	virtual void ServerResponded(GameServerItem &server) = 0;
+
+	virtual void ServerFailedToRespond() = 0;
+};
+
+class ISteamMatchmakingRulesResponse
+{
+public:
+	virtual void RulesResponded(const char *rule, const char *value ) = 0;
+
+	virtual void RulesFailedToRespond() = 0;
+
+	virtual void RulesRefreshComplete() = 0;
+};
 
 class ISteamMatchmaking {
 public:

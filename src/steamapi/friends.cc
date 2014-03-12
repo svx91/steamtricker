@@ -4,6 +4,7 @@
 
 const char *CSteamFriends::GetPersonaName()
 {
+	STUB();
 	return NULL;
 }
 
