@@ -10,12 +10,14 @@ bool CSteamUserStats::RequestCurrentStats()
 bool CSteamUserStats::GetStat(const char *name, int32 *data )
 {
 	STUB();
+	*data = 0;
 	return true;
 };
 
 bool CSteamUserStats::GetStat(const char *name, float *data)
 {
 	STUB();
+	*data = 0;
 	return true;
 }
 
@@ -42,6 +44,7 @@ bool CSteamUserStats::UpdateAvgRateStat(const char *name,
 bool CSteamUserStats::GetAchievement(const char *name, bool *achieved)
 {
 	STUB();
+	*achieved = true;
 	return true;
 }
 
@@ -62,6 +65,8 @@ bool CSteamUserStats::GetAchievementAndUnlockTime(const char *name,
 						  uint32 *unlockTime)
 {
 	STUB();
+	*achieved = true;
+	*unlockTime = 0;
 	return true;
 }
 
@@ -81,7 +86,7 @@ const char *CSteamUserStats::GetAchievementDisplayAttribute(const char *name,
 							    const char *key)
 {
 	STUB();
-	return NULL;
+	return "AchievementDisplayAttribute";
 }
 
 bool CSteamUserStats::IndicateAchievementProgress(const char *name,
@@ -103,6 +108,7 @@ bool CSteamUserStats::GetUserStat(CSteamID steamIDUser,
 				  int32 *data)
 {
 	STUB();
+	*data = 0;
 	return true;
 }
 
@@ -111,6 +117,7 @@ bool CSteamUserStats::GetUserStat(CSteamID steamIDUser,
 				  float *data)
 {
 	STUB();
+	*data = 0;
 	return true;
 }
 
@@ -119,6 +126,7 @@ bool CSteamUserStats::GetUserAchievement(CSteamID steamIDUser,
 					 bool *achieved)
 {
 	STUB();
+	*achieved = true;
 	return true;
 }
 
@@ -128,6 +136,8 @@ bool CSteamUserStats::GetUserAchievementAndUnlockTime(CSteamID steamIDUser,
 						      uint32 *unlockTime)
 {
 	STUB();
+	*achieved = true;
+	*unlockTime = 0;
 	return true;
 }
 
@@ -155,7 +165,7 @@ SteamAPICall CSteamUserStats::FindLeaderboard(const char *leaderboardName)
 const char *CSteamUserStats::GetLeaderboardName(SteamLeaderboard steamLeaderboard)
 {
 	STUB();
-	return NULL;
+	return "LeaderboardName";
 }
 int CSteamUserStats::GetLeaderboardEntryCount(SteamLeaderboard steamLeaderboard)
 {
@@ -167,14 +177,14 @@ LeaderboardSortMethod CSteamUserStats::GetLeaderboardSortMethod(
 		SteamLeaderboard steamLeaderboard)
 {
 	STUB();
-	return LeaderboardSortMethodNone;
+	return LeaderboardSortMethodDescending;
 }
 
 LeaderboardDisplayType CSteamUserStats::GetLeaderboardDisplayType(
 		SteamLeaderboard steamLeaderboard)
 {
 	STUB();
-	return LeaderboardDisplayTypeNone;
+	return LeaderboardDisplayTypeNumeric;
 }
 
 SteamAPICall CSteamUserStats::DownloadLeaderboardEntries(
@@ -195,7 +205,8 @@ bool CSteamUserStats::GetDownloadedLeaderboardEntry(
 		int detailsMax)
 {
 	STUB();
-	return true;
+	*details = 0;
+	return false;
 }
 
 SteamAPICall CSteamUserStats::UploadLeaderboardScore(

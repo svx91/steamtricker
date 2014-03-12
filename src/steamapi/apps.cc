@@ -33,7 +33,7 @@ const char *CSteamApps::GetCurrentGameLanguage()
 const char *CSteamApps::GetAvailableGameLanguages()
 {
 	STUB();
-	return NULL;
+	return "German";
 }
 
 bool CSteamApps::BIsSubscribedApp(AppId appID)

@@ -20,5 +20,5 @@ GameCoordResult CSteamGameCoordinator::RetrieveMessage(uint32 *msgType,
 						       uint32 *msgSize)
 {
 	STUB();
-	return GameCoordResultOK;
+	return GameCoordResultNoMessage;
 }

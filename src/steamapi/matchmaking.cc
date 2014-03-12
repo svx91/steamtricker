@@ -134,7 +134,7 @@ const char *CSteamMatchmaking::GetLobbyData(CSteamID steamIDLobby,
 					    const char *key)
 {
 	STUB();
-	return NULL;
+	return "LobbyData";
 }
 
 bool CSteamMatchmaking::SetLobbyData(CSteamID steamIDLobby,
@@ -159,6 +159,7 @@ bool CSteamMatchmaking::GetLobbyDataByIndex(CSteamID steamIDLobby,
 					    int valueBufferSize)
 {
 	STUB();
+	*value = 0;
 	return true;
 }
 
@@ -174,7 +175,7 @@ const char *CSteamMatchmaking::GetLobbyMemberData(CSteamID steamIDLobby,
 						  const char *key)
 {
 	STUB();
-	return NULL;
+	return "LobbyMemberData";
 }
 
 void CSteamMatchmaking::SetLobbyMemberData(CSteamID steamIDLobby,
@@ -201,6 +202,7 @@ int CSteamMatchmaking::GetLobbyChatEntry(CSteamID steamIDLobby,
 					 ChatEntryType *chatEntryType)
 {
 	STUB();
+	*chatEntryType = ChatEntryTypeInvalid;
 	return 0;
 }
 
@@ -225,6 +227,9 @@ bool CSteamMatchmaking::GetLobbyGameServer(CSteamID steamIDLobby,
 					   CSteamID *steamIDGameServer)
 {
 	STUB();
+	*gameServerIP = 0;
+	*gameServerPort = 0;
+	*steamIDGameServer = CSteamID(static_cast<uint64>(0));
 	return true;
 }
 

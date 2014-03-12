@@ -92,7 +92,9 @@ Result CSteamGameStats::AddSessionAttributeInt64(uint64 sessionID,
 	return ResultOK;
 }
 
-Result CSteamGameStats::AddRowAttributeInt64(uint64 rowID, const char *name, int64 data)
+Result CSteamGameStats::AddRowAttributeInt64(uint64 rowID,
+					     const char *name,
+					     int64 data)
 {
 	STUB();
 	return ResultOK;

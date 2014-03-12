@@ -1,3 +1,4 @@
+#include <string>
 
 #include "friends.h"
 
@@ -5,7 +6,7 @@
 const char *CSteamFriends::GetPersonaName()
 {
 	STUB();
-	return NULL;
+	return "UserName";
 }
 
 void CSteamFriends::SetPersonaName(const char *personaName)
@@ -46,7 +47,9 @@ PersonaState CSteamFriends::GetFriendPersonaState(CSteamID steamIDFriend)
 const char *CSteamFriends::GetFriendPersonaName(CSteamID steamIDFriend)
 {
 	STUB();
-	return NULL;
+	std::string friendName("FriendName ");
+	friendName += steamIDFriend.GetAccountID();
+	return friendName.c_str();
 }
 
 int CSteamFriends::GetFriendAvatar(CSteamID steamIDFriend, int avatarSize)
@@ -66,13 +69,13 @@ const char *CSteamFriends::GetFriendPersonaNameHistory(CSteamID steamIDFriend,
 						       int personaName)
 {
 	STUB();
-	return NULL;
+	return "HistoryOfFriendPersonaName";
 }
 
 bool CSteamFriends::HasFriend(CSteamID steamIDFriend, int friendFlags)
 {
 	STUB();
-	return true;
+	return false;
 }
 
 int CSteamFriends::GetClanCount()
@@ -90,7 +93,7 @@ CSteamID CSteamFriends::GetClanByIndex(int clan)
 const char *CSteamFriends::GetClanName(CSteamID steamIDClan)
 {
 	STUB();
-	return NULL;
+	return "ClanName";
 }
 
 int CSteamFriends::GetFriendCountFromSource(CSteamID steamIDSource)

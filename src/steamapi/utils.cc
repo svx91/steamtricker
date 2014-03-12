@@ -28,31 +28,36 @@ uint32 CSteamUtils::GetServerRealTime()
 const char *CSteamUtils::GetIPCountry()
 {
 	STUB();
-	return NULL;
+	return "DE";
 }
 
 bool CSteamUtils::GetImageSize(int image, uint32 *width, uint32 *height)
 {
 	STUB();
-	return true;
+	*width = 0;
+	*height = 0;
+	return false;
 }
 
 bool CSteamUtils::GetImageRGBA(int image, uint8 *dest, int destBufferSize)
 {
 	STUB();
-	return true;
+	*dest = 0;
+	return false;
 }
 
 bool CSteamUtils::GetCSERIPPort(uint32 *ip, uint16 *port)
 {
 	STUB();
-	return true;
+	*ip = 0;
+	*port = 0;
+	return false;
 }
 
 uint8 CSteamUtils::GetCurrentBatteryPower()
 {
 	STUB();
-	return 0;
+	return -1;
 }
 
 uint32 CSteamUtils::GetAppID()
@@ -69,7 +74,8 @@ void CSteamUtils::SetOverlayNotificationPosition(NotificationPosition notificati
 bool CSteamUtils::IsAPICallCompleted(SteamAPICall steamAPICall, bool *failed)
 {
 	STUB();
-	return false;
+	*failed = false;
+	return true;
 }
 
 SteamAPICallFailure CSteamUtils::GetAPICallFailureReason(SteamAPICall steamAPICall)
@@ -85,7 +91,8 @@ bool CSteamUtils::GetAPICallResult(SteamAPICall steamAPICall,
 				   bool *failed)
 {
 	STUB();
-	return false;
+	*failed = false;
+	return true;
 }
 
 void CSteamUtils::RunFrame()

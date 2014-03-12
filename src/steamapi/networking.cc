@@ -13,6 +13,7 @@ bool CSteamNetworking::SendP2PPacket(CSteamID steamIDRemote,
 bool CSteamNetworking::IsP2PPacketAvailable(uint32 *msgSize)
 {
 	STUB();
+	*msgSize = 0;
 	return false;
 }
 
@@ -22,6 +23,8 @@ bool CSteamNetworking::ReadP2PPacket(void *dest,
 				     CSteamID *steamIDRemote)
 {
 	STUB();
+	*msgSize = 0;
+	*steamIDRemote = CSteamID(static_cast<uint64>(0));
 	return true;
 }
 
@@ -41,7 +44,7 @@ bool CSteamNetworking::GetP2PSessionState(CSteamID steamIDRemote,
 					  P2PSessionState *connectionState)
 {
 	STUB();
-	return true;
+	return false;
 }
 
 NetListenSocket CSteamNetworking::CreateListenSocket(int virtualP2PPort,
@@ -96,7 +99,8 @@ bool CSteamNetworking::IsDataAvailableOnSocket(NetSocket socket,
 					       uint32 *msgSize)
 {
 	STUB();
-	return true;
+	*msgSize = 0;
+	return false;
 }
 
 bool CSteamNetworking::RetrieveDataFromSocket(NetSocket socket,
@@ -105,7 +109,8 @@ bool CSteamNetworking::RetrieveDataFromSocket(NetSocket socket,
 					      uint32 *msgSize)
 {
 	STUB();
-	return true;
+	*msgSize = 0;
+	return false;
 }
 
 bool CSteamNetworking::IsDataAvailable(NetListenSocket listenSocket,
@@ -113,6 +118,8 @@ bool CSteamNetworking::IsDataAvailable(NetListenSocket listenSocket,
 				       NetSocket *socket)
 {
 	STUB();
+	*msgSize = 0;
+	*socket = 0;
 	return false;
 }
 
@@ -123,7 +130,9 @@ bool CSteamNetworking::RetrieveData(NetListenSocket listenSocket,
 				    NetSocket *socket)
 {
 	STUB();
-	return true;
+	*msgSize = 0;
+	*socket = 0;
+	return false;
 }
 
 bool CSteamNetworking::GetSocketInfo(NetSocket socket,
@@ -133,7 +142,11 @@ bool CSteamNetworking::GetSocketInfo(NetSocket socket,
 				     uint16 *portRemote)
 {
 	STUB();
-	return true;
+	*steamIDRemote = CSteamID(static_cast<uint64>(0));
+	*socketStatus = 0;
+	*ipRemote = 0;
+	*portRemote = 0;
+	return false;
 }
 
 bool CSteamNetworking::GetListenSocketInfo(NetListenSocket listenSocket,
@@ -141,7 +154,9 @@ bool CSteamNetworking::GetListenSocketInfo(NetListenSocket listenSocket,
 					   uint16 *port)
 {
 	STUB();
-	return true;
+	*ip = 0;
+	*port = 0;
+	return false;
 }
 
 NetSocketConnectionType CSteamNetworking::GetSocketConnectionType(NetSocket socket)

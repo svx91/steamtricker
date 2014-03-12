@@ -80,9 +80,12 @@ int CSteamMasterServerUpdater::GetNumMasterServers() {
 	return 0;
 }
 
-int CSteamMasterServerUpdater::GetMasterServerAddress(int server, char *out, int outBufferSize)
+int CSteamMasterServerUpdater::GetMasterServerAddress(int server,
+						      char *out,
+						      int outBufferSize)
 {
 	STUB();
+	*out = 0;
 	return 0;
 }
 

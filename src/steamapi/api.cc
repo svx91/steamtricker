@@ -230,6 +230,7 @@ SteamGameServer_InitSafe(uint32 ip,
 			 const char *gameDir,
 			 const char *versionString)
 {
+	STUB();
 	return true;
 }
 
@@ -243,105 +244,80 @@ SteamGameServer_Init(uint32 ip,
 		     const char *gameDir,
 		     const char *versionString)
 {
+	STUB();
 	return true;
 }
 
 __STEAMAPI ISteamGameServer *
 SteamGameServer() {
+	STUB();
 	return NULL;
 }
 
 __STEAMAPI ISteamUtils *
 SteamGameServerUtils() {
+	STUB();
 	return NULL;
 }
 
 __STEAMAPI ISteamMasterServerUpdater *
 SteamMasterServerUpdater() {
+	STUB();
 	return NULL;
 }
 
 __STEAMAPI ISteamNetworking *
 SteamGameServerNetworking() {
+	STUB();
 	return NULL;
 }
 
 __STEAMAPI ISteamGameServerStats *
 SteamGameServerStats() {
+	STUB();
 	return NULL;
 }
 
 __STEAMAPI void
 SteamGameServer_Shutdown() {
-	
+	STUB();
 }
 
 __STEAMAPI void
 SteamGameServer_RunCallbacks()
 {
-	
+	STUB();
 }
 
 __STEAMAPI bool
 SteamGameServer_BSecure() {
+	STUB();
 	return true;
 }
 
 __STEAMAPI uint64
 SteamGameServer_GetSteamID()
 {
+	STUB();
 	return 0;
 }
 
 __STEAMAPI SteamPipeId
 SteamGameServer_GetHSteamPipe()
 {
+	STUB();
 	return 0;
 }
 
 __STEAMAPI SteamUserId
 SteamGameServer_GetHSteamUser()
 {
+	STUB();
 	return 0;
 }
 
 __STEAMAPI ISteamClient *
 g_pSteamClientGameServer; // FIXME
-
-/*
-SteamAPI_Init
-SteamAPI_InitSafe
-SteamAPI_Shutdown
-SteamAPI_IsSteamRunning
-SteamAPI_RestartAppIfNecessary
-SteamAPI_WriteMiniDump
-SteamAPI_SetMiniDumpComment
-SteamAPI_UseBreakpadCrashHandler
-SteamClient
-SteamUser
-SteamFriends
-SteamUtils
-SteamMatchmaking
-SteamUserStats
-SteamApps
-SteamNetworking
-SteamMatchmakingServers
-SteamRemoteStorage
-SteamAPI_RunCallbacks
-SteamAPI_RegisterCallback
-SteamAPI_UnregisterCallback
-SteamAPI_RegisterCallResult
-SteamAPI_UnregisterCallResult
-Steam_RunCallbacks
-Steam_RegisterInterfaceFuncs
-Steam_GetHSteamUserCurrent
-SteamAPI_GetSteamInstallPath
-SteamAPI_GetHSteamPipe
-SteamAPI_SetTryCatchCallbacks
-GetHSteamPipe
-GetHSteamUser
-SteamAPI_GetHSteamUser
-*/
 
 void
 SteamAPI::hookInit()
@@ -662,7 +638,8 @@ SteamAPI::SteamUtils()
 ISteamMatchmaking *
 SteamAPI::SteamMatchmaking()
 {
-	return static_cast<ISteamMatchmaking*>(&CSteamMatchmaking::getInstance());
+	return static_cast<ISteamMatchmaking*>(
+		&CSteamMatchmaking::getInstance());
 }
 
 ISteamUserStats *
@@ -686,11 +663,13 @@ SteamAPI::SteamNetworking()
 ISteamMatchmakingServers *
 SteamAPI::SteamMatchmakingServers()
 {
-	return static_cast<ISteamMatchmakingServers*>(&CSteamMatchmakingServers::getInstance());
+	return static_cast<ISteamMatchmakingServers*>(
+		&CSteamMatchmakingServers::getInstance());
 }
 
 ISteamRemoteStorage *
 SteamAPI::SteamRemoteStorage()
 {
-	return static_cast<ISteamRemoteStorage*>(&CSteamRemoteStorage::getInstance());
+	return static_cast<ISteamRemoteStorage*>(
+		&CSteamRemoteStorage::getInstance());
 }

@@ -137,6 +137,7 @@ bool CSteamGameServerStats::GetUserStat(CSteamID steamIDUser,
 					int32 *data)
 {
 	STUB();
+	*data = 0;
 	return true;
 }
 
@@ -145,6 +146,7 @@ bool CSteamGameServerStats::GetUserStat(CSteamID steamIDUser,
 					float *data)
 {
 	STUB();
+	*data = 0;
 	return true;
 }
 
@@ -153,6 +155,7 @@ bool CSteamGameServerStats::GetUserAchievement(CSteamID steamIDUser,
 					       bool *achieved)
 {
 	STUB();
+	*achieved = true;
 	return true;
 }
 

@@ -45,6 +45,7 @@ void CSteamUser::TrackAppUsageEvent(CGameID gameID,
 bool CSteamUser::GetUserDataFolder(char *buffer, int bufferSize)
 {
 	STUB();
+	*buffer = 0;
 	return false;
 }
 
@@ -62,7 +63,7 @@ VoiceResult CSteamUser::GetAvailableVoice(uint32 *compressed,
 					  uint32 *uncompressed)
 {
 	STUB();
-	return VoiceResultOK;
+	return VoiceResultNoData;
 }
 
 VoiceResult CSteamUser::GetVoice(bool wantCompressed,
@@ -75,7 +76,7 @@ VoiceResult CSteamUser::GetVoice(bool wantCompressed,
 				 uint32 *uncompressBytesWritten)
 {
 	STUB();
-	return VoiceResultOK;
+	return VoiceResultNoData;
 }
 
 VoiceResult CSteamUser::DecompressVoice(const void *compressed,
@@ -85,7 +86,7 @@ VoiceResult CSteamUser::DecompressVoice(const void *compressed,
 					uint32 *bytesWritten)
 {
 	STUB();
-	return VoiceResultOK;
+	return VoiceResultNoData;
 }
 
 AuthTicket CSteamUser::GetAuthSessionTicket(void *ticket,
@@ -93,7 +94,7 @@ AuthTicket CSteamUser::GetAuthSessionTicket(void *ticket,
 					    uint32 *ticketCount)
 {
 	STUB();
-	return VoiceResultOK;
+	return 0;
 }
 
 BeginAuthSessionResult CSteamUser::BeginAuthSession(const void *authTicket,

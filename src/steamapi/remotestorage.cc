@@ -39,12 +39,15 @@ const char *CSteamRemoteStorage::GetFileNameAndSize(int file,
 						    int32 *fileSizeInBytes)
 {
 	STUB();
-	return NULL;
+	*fileSizeInBytes = 0;
+	return "FileName";
 }
 
 bool CSteamRemoteStorage::GetQuota(int32 *totalBytes, int32 *availableBytes)
 {
 	STUB();
+	*totalBytes = 1000000000;
+	*availableBytes = 1000000000;
 	return true;
 }
 
