@@ -13,6 +13,52 @@
 #include "networking.h"
 #include "userstats.h"
 
+#define STRINGIFY(x) #x
+#define REGISTER_HOOK(FUNC, TYPE) { \
+		struct hook h = { \
+			.lib_name = "libsteam_api.so", \
+			.symbol_name = STRINGIFY(FUNC), \
+			.hook_handle = (void*) FUNC, \
+			.version = -1 \
+		}; \
+		struct hooked_symbol * sym = register_hook(&h); \
+		SteamAPI::real.FUNC = reinterpret_cast< TYPE >(sym->symbol_handle); \
+	}
+
+#define USE_STEAM_LIB
+#ifdef USE_STEAM_LIB
+#define FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(FUNC, ...) { \
+	SteamAPIRealCounter ___steamAPIRealCounter; \
+	return SteamAPI::real.FUNC(__VA_ARGS__); }
+#define METHOD_FORWARD_AND_FINISH_IF_ENABLED(CLASS, METHOD, ...) { \
+	SteamAPIRealCounter __steamAPIRealCounter; \
+	return SteamAPI::real.CLASS()->METHOD(__VA_ARGS__); }
+#define REAL_CLASS_IF_IN_REAL_CALL(CLASS) \
+	if(SteamAPIRealCounter::isInReal()) { \
+		return SteamAPI::real.CLASS(); \
+	}
+#else
+#define FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(FUNC, ...)
+#define METHOD_FORWARD_AND_FINISH_IF_ENABLED(CLASS, METHOD, ...) 
+#define REAL_CLASS_IF_IN_REAL_CALL(CLASS) 
+#endif
+
+class SteamAPIRealCounter {
+public:
+	SteamAPIRealCounter() {
+		mCounter++;
+	}
+	~SteamAPIRealCounter() {
+		mCounter--;
+	}
+	static bool isInReal() {
+		return mCounter > 0;
+	}
+
+private:
+	static int mCounter;
+};
+
 class SteamAPI {
 public:
 	static void hookInit();
@@ -45,6 +91,56 @@ public:
 	static ISteamMatchmakingServers * SteamMatchmakingServers();
 
 	static ISteamRemoteStorage * SteamRemoteStorage();
+
+	struct RealSteamAPI {
+		bool (*SteamAPI_Init)();
+		void (*SteamAPI_Shutdown)();
+		bool (*SteamAPI_InitSafe)();
+		bool (*SteamAPI_IsSteamRunning)();
+		bool (*SteamAPI_RestartAppIfNecessary)(uint32);
+		void (*SteamAPI_WriteMiniDump)(uint32, void *, uint32);
+		void (*SteamAPI_SetMiniDumpComment)(const char *);
+		void (*SteamAPI_UseBreakpadCrashHandler)(char const *, char const *, char const *);
+		ISteamClient* (*SteamClient)();
+		ISteamUser* (*SteamUser)();
+		ISteamFriends* (*SteamFriends)();
+		ISteamUtils* (*SteamUtils)();
+		ISteamMatchmaking* (*SteamMatchmaking)();
+		ISteamUserStats* (*SteamUserStats)();
+		ISteamApps* (*SteamApps)();
+		ISteamNetworking* (*SteamNetworking)();
+		ISteamMatchmakingServers* (*SteamMatchmakingServers)();
+		ISteamRemoteStorage* (*SteamRemoteStorage)();
+		void (*SteamAPI_RunCallbacks)();
+		void (*SteamAPI_RegisterCallback)(class CallbackBase*, int);
+		void (*SteamAPI_UnregisterCallback)(class CallbackBase*);
+		void (*SteamAPI_RegisterCallResult)(class CallbackBase*, SteamAPICall);
+		void (*SteamAPI_UnregisterCallResult)(class CallbackBase*, SteamAPICall);
+		void (*Steam_RunCallbacks)(SteamPipeId, bool);
+		void (*Steam_RegisterInterfaceFuncs)(void*);
+		SteamUserId (*Steam_GetHSteamUserCurrent)();
+		const char* (*SteamAPI_GetSteamInstallPath)();
+		SteamPipeId (*SteamAPI_GetHSteamPipe)();
+		void (*SteamAPI_SetTryCatchCallbacks)(bool);
+		SteamPipeId (*GetHSteamPipe)();
+		SteamUserId (*GetHSteamUser)();
+		SteamUserId (*SteamAPI_GetHSteamUser)();
+		bool (*SteamGameServer_InitSafe)(uint32, uint16, uint16, uint16, uint16, ServerMode, const char *, const char);
+		bool (*SteamGameServer_Init)(uint32, uint16, uint16, uint16, uint16, ServerMode, const char *, const char);
+		ISteamGameServer* (*SteamGameServer)();
+		ISteamUtils* (*SteamGameServerUtils)();
+		ISteamMasterServerUpdater* (*SteamMasterServerUpdater)();
+		ISteamNetworking* (*SteamGameServerNetworking)();
+		ISteamGameServerStats* (*SteamGameServerStats)();
+		void (*SteamGameServer_Shutdown)();
+		void (*SteamGameServer_RunCallbacks)();
+		bool (*SteamGameServer_BSecure)();
+		uint64 (*SteamGameServer_GetSteamID)();
+		SteamPipeId (*SteamGameServer_GetHSteamPipe)();
+		SteamUserId (*SteamGameServer_GetHSteamUser)();
+	};
+
+	static RealSteamAPI real;
 };
 
 #endif /* STEAMTRICKER_STEAMAPI_API_H_ */

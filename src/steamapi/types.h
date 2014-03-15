@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <inttypes.h>
 
-#define STUB() { fprintf(stderr, "SteamAPI STUB: %s\n", __PRETTY_FUNCTION__); }
+#define STUB() { fprintf(stderr, "[SteamAPI][STUB] %s\n", __PRETTY_FUNCTION__); }
+#define LOG(FORMAT, ...) { fprintf(stderr, "[SteamAPI] " FORMAT "\n", __VA_ARGS__); }
 
 typedef uint64_t uint64;
 typedef uint32_t uint32;

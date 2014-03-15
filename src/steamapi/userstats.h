@@ -198,6 +198,8 @@ public:
 		int scoreDetailsCount);
 
 	SteamAPICall GetNumberOfCurrentPlayers();
+
+	static SteamLeaderboard mLastLeaderboard;
 };
 
 #endif /* STEAMTRICKER_STEAMAPI_USERSTATS_H_ */

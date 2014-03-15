@@ -1,4 +1,4 @@
-
+#include "api.h"
 #include "userstats.h"
 
 bool CSteamUserStats::RequestCurrentStats()
@@ -10,6 +10,8 @@ bool CSteamUserStats::RequestCurrentStats()
 bool CSteamUserStats::GetStat(const char *name, int32 *data )
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetStat,
+					     name, data);
 	*data = 0;
 	return true;
 };
@@ -17,6 +19,8 @@ bool CSteamUserStats::GetStat(const char *name, int32 *data )
 bool CSteamUserStats::GetStat(const char *name, float *data)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetStat,
+					     name, data);
 	*data = 0;
 	return true;
 }
@@ -24,12 +28,16 @@ bool CSteamUserStats::GetStat(const char *name, float *data)
 bool CSteamUserStats::SetStat(const char *name, int32 data)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, SetStat,
+					     name, data);
 	return true;
 }
 
 bool CSteamUserStats::SetStat(const char *name, float data)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, SetStat,
+					     name, data);
 	return true;
 }
 
@@ -38,12 +46,17 @@ bool CSteamUserStats::UpdateAvgRateStat(const char *name,
 					double sessionLength)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, UpdateAvgRateStat,
+					     name, countThisSession,
+					     sessionLength);
 	return true;
 }
 
 bool CSteamUserStats::GetAchievement(const char *name, bool *achieved)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetAchievement,
+					     name, achieved);
 	*achieved = true;
 	return true;
 }
@@ -51,12 +64,16 @@ bool CSteamUserStats::GetAchievement(const char *name, bool *achieved)
 bool CSteamUserStats::SetAchievement(const char *name)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, SetAchievement,
+					     name);
 	return true;
 }
 
 bool CSteamUserStats::ClearAchievement(const char *name)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, ClearAchievement,
+					     name);
 	return true;
 }
 
@@ -65,6 +82,8 @@ bool CSteamUserStats::GetAchievementAndUnlockTime(const char *name,
 						  uint32 *unlockTime)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetAchievementAndUnlockTime,
+					     name, achieved, unlockTime);
 	*achieved = true;
 	*unlockTime = 0;
 	return true;
@@ -73,12 +92,15 @@ bool CSteamUserStats::GetAchievementAndUnlockTime(const char *name,
 bool CSteamUserStats::StoreStats()
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, StoreStats);
 	return true;
 }
 
 int CSteamUserStats::GetAchievementIcon(const char *name)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetAchievementIcon,
+					     name);
 	return 0;
 }
 
@@ -86,6 +108,8 @@ const char *CSteamUserStats::GetAchievementDisplayAttribute(const char *name,
 							    const char *key)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetAchievementDisplayAttribute,
+					     name, key);
 	return "AchievementDisplayAttribute";
 }
 
@@ -94,12 +118,16 @@ bool CSteamUserStats::IndicateAchievementProgress(const char *name,
 						  uint32 maxProgress)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, IndicateAchievementProgress,
+					     name, curProgress, maxProgress);
 	return true;
 }
 
 SteamAPICall CSteamUserStats::RequestUserStats(CSteamID steamIDUser)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, RequestUserStats,
+					     steamIDUser);
 	return SteamAPICallInvalid;
 }
 
@@ -108,6 +136,8 @@ bool CSteamUserStats::GetUserStat(CSteamID steamIDUser,
 				  int32 *data)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetUserStat,
+					     steamIDUser, name, data);
 	*data = 0;
 	return true;
 }
@@ -117,6 +147,8 @@ bool CSteamUserStats::GetUserStat(CSteamID steamIDUser,
 				  float *data)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetUserStat,
+					     steamIDUser, name, data);
 	*data = 0;
 	return true;
 }
@@ -126,6 +158,8 @@ bool CSteamUserStats::GetUserAchievement(CSteamID steamIDUser,
 					 bool *achieved)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetUserAchievement,
+					     steamIDUser, name, achieved);
 	*achieved = true;
 	return true;
 }
@@ -136,6 +170,9 @@ bool CSteamUserStats::GetUserAchievementAndUnlockTime(CSteamID steamIDUser,
 						      uint32 *unlockTime)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetUserAchievementAndUnlockTime,
+					     steamIDUser, name, achieved,
+					     unlockTime);
 	*achieved = true;
 	*unlockTime = 0;
 	return true;
@@ -144,6 +181,8 @@ bool CSteamUserStats::GetUserAchievementAndUnlockTime(CSteamID steamIDUser,
 bool CSteamUserStats::ResetAllStats(bool achievementsToo)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, ResetAllStats,
+					     achievementsToo);
 	return true;
 }
 
@@ -153,30 +192,43 @@ SteamAPICall CSteamUserStats::FindOrCreateLeaderboard(
 		LeaderboardDisplayType leaderboardDisplayType)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, FindOrCreateLeaderboard,
+					     leaderboardName,
+					     leaderboardSortMethod,
+					     leaderboardDisplayType);
 	return SteamAPICallInvalid;
 }
 
 SteamAPICall CSteamUserStats::FindLeaderboard(const char *leaderboardName)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, FindLeaderboard,
+					     leaderboardName);
 	return SteamAPICallInvalid;
 }
 
 const char *CSteamUserStats::GetLeaderboardName(SteamLeaderboard steamLeaderboard)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetLeaderboardName,
+					     steamLeaderboard);
 	return "LeaderboardName";
 }
 int CSteamUserStats::GetLeaderboardEntryCount(SteamLeaderboard steamLeaderboard)
 {
+	mLastLeaderboard = steamLeaderboard;
 	STUB();
-	return 0;
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetLeaderboardEntryCount,
+					     steamLeaderboard);
+	return 10;
 }
 
 LeaderboardSortMethod CSteamUserStats::GetLeaderboardSortMethod(
 		SteamLeaderboard steamLeaderboard)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetLeaderboardSortMethod,
+					     steamLeaderboard);
 	return LeaderboardSortMethodDescending;
 }
 
@@ -184,6 +236,8 @@ LeaderboardDisplayType CSteamUserStats::GetLeaderboardDisplayType(
 		SteamLeaderboard steamLeaderboard)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetLeaderboardDisplayType,
+					     steamLeaderboard);
 	return LeaderboardDisplayTypeNumeric;
 }
 
@@ -194,6 +248,10 @@ SteamAPICall CSteamUserStats::DownloadLeaderboardEntries(
 		int rangeEnd)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, DownloadLeaderboardEntries,
+					     steamLeaderboard,
+					     leaderboardDataRequest,
+					     rangeStart, rangeEnd);
 	return SteamAPICallInvalid;
 }
 
@@ -205,6 +263,10 @@ bool CSteamUserStats::GetDownloadedLeaderboardEntry(
 		int detailsMax)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetDownloadedLeaderboardEntry,
+					     steamLeaderboardEntries, index,
+					     leaderboardEntry, details,
+					     detailsMax);
 	*details = 0;
 	return false;
 }
@@ -217,12 +279,20 @@ SteamAPICall CSteamUserStats::UploadLeaderboardScore(
 		int scoreDetailsCount)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, UploadLeaderboardScore,
+					     steamLeaderboard,
+					     leaderboardUploadScoreMethod,
+					     score, scoreDetails,
+					     scoreDetailsCount);
 	return SteamAPICallInvalid;
 }
 
 SteamAPICall CSteamUserStats::GetNumberOfCurrentPlayers()
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamUserStats, GetNumberOfCurrentPlayers);
 	return SteamAPICallInvalid;
 }
+
+SteamLeaderboard CSteamUserStats::mLastLeaderboard;
 

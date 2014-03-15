@@ -5,6 +5,7 @@ __STEAMAPI bool
 SteamAPI_Init()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_Init);
 	return SteamAPI::Init();
 }
 
@@ -12,6 +13,7 @@ __STEAMAPI bool
 SteamAPI_InitSafe()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_InitSafe);
 	return SteamAPI::InitSafe();
 }
 
@@ -19,6 +21,7 @@ __STEAMAPI void
 SteamAPI_Shutdown()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_Shutdown);
 	SteamAPI::Shutdown();
 }
 
@@ -26,6 +29,7 @@ __STEAMAPI bool
 SteamAPI_IsSteamRunning()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_IsSteamRunning);
 	return SteamAPI::IsSteamRunning();
 }
 
@@ -33,6 +37,8 @@ __STEAMAPI bool
 SteamAPI_RestartAppIfNecessary(uint32 appId)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_RestartAppIfNecessary,
+					       appId);
 	return false;
 }
 
@@ -42,12 +48,18 @@ SteamAPI_WriteMiniDump(uint32 exceptionCode,
 		       uint32 buildId)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_WriteMiniDump,
+					       exceptionCode,
+					       exceptionInfo,
+					       buildId);
 }
 
 __STEAMAPI void
 SteamAPI_SetMiniDumpComment(const char *msg)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_SetMiniDumpComment,
+					       msg);
 }
 
 __STEAMAPI void
@@ -55,6 +67,8 @@ SteamAPI_UseBreakpadCrashHandler(char const *version,
 				 char const *date,
 				 char const *time)
 {
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_UseBreakpadCrashHandler,
+					       version, date, time);
 	STUB();
 }
 
@@ -62,6 +76,7 @@ __STEAMAPI ISteamClient *
 SteamClient()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamClient);
 	return SteamAPI::SteamClient();
 }
 
@@ -69,6 +84,7 @@ __STEAMAPI ISteamUser *
 SteamUser()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamUser);
 	return SteamAPI::SteamUser();
 }
 
@@ -76,6 +92,7 @@ __STEAMAPI ISteamFriends *
 SteamFriends()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamFriends);
 	return SteamAPI::SteamFriends();
 }
 
@@ -83,6 +100,7 @@ __STEAMAPI ISteamUtils *
 SteamUtils()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamUtils);
 	return SteamAPI::SteamUtils();
 }
 
@@ -90,6 +108,7 @@ __STEAMAPI ISteamMatchmaking *
 SteamMatchmaking()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamMatchmaking);
 	return SteamAPI::SteamMatchmaking();
 }
 
@@ -97,6 +116,7 @@ __STEAMAPI ISteamUserStats *
 SteamUserStats()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamUserStats);
 	return SteamAPI::SteamUserStats();
 }
 
@@ -104,6 +124,7 @@ __STEAMAPI ISteamApps *
 SteamApps()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamApps);
 	return SteamAPI::SteamApps();
 }
 
@@ -111,6 +132,7 @@ __STEAMAPI ISteamNetworking *
 SteamNetworking()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamNetworking);
 	return SteamAPI::SteamNetworking();
 }
 
@@ -118,6 +140,7 @@ __STEAMAPI ISteamMatchmakingServers *
 SteamMatchmakingServers()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamMatchmakingServers);
 	return SteamAPI::SteamMatchmakingServers();
 }
 
@@ -125,25 +148,34 @@ __STEAMAPI ISteamRemoteStorage *
 SteamRemoteStorage()
 {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamRemoteStorage);
 	return SteamAPI::SteamRemoteStorage();
 }
+
+class CallbackBase *lastCallback = NULL;
 
 __STEAMAPI void
 SteamAPI_RunCallbacks()
 {
-	STUB();
+	// STUB(); // This is annoying and gives no information
+		   // it gets called every frame
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_RunCallbacks);
 }
 
 __STEAMAPI void
 SteamAPI_RegisterCallback(class CallbackBase *callback, int iCallback)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_RegisterCallback,
+					       callback, iCallback);
 }
 
 __STEAMAPI void
 SteamAPI_UnregisterCallback(class CallbackBase *callback)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_UnregisterCallback,
+					       callback);
 }
 
 __STEAMAPI void
@@ -151,6 +183,10 @@ SteamAPI_RegisterCallResult(class CallbackBase *callback,
 			    SteamAPICall apiCall)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_RegisterCallResult,
+					       callback,
+					       apiCall);
+	lastCallback = callback;
 }
 
 __STEAMAPI void
@@ -158,24 +194,33 @@ SteamAPI_UnregisterCallResult(class CallbackBase *callback,
 			      SteamAPICall apiCall)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_UnregisterCallResult,
+					       callback,
+					       apiCall);
 }
 
 __STEAMAPI void
 Steam_RunCallbacks(SteamPipeId steamPipe, bool gameServerCallbacks)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(Steam_RunCallbacks,
+					       steamPipe,
+					       gameServerCallbacks);
 }
 
 __STEAMAPI void
 Steam_RegisterInterfaceFuncs(void *module)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(Steam_RegisterInterfaceFuncs,
+					       module);
 }
 
 __STEAMAPI SteamUserId
 Steam_GetHSteamUserCurrent()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(Steam_GetHSteamUserCurrent);
 	return 0;
 }
 
@@ -183,6 +228,7 @@ __STEAMAPI const char *
 SteamAPI_GetSteamInstallPath()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_GetSteamInstallPath);
 	return NULL;
 }
 
@@ -190,6 +236,7 @@ __STEAMAPI SteamPipeId
 SteamAPI_GetHSteamPipe()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_GetHSteamPipe);
 	return 0;
 }
 
@@ -197,12 +244,15 @@ __STEAMAPI void
 SteamAPI_SetTryCatchCallbacks(bool tryCatchCallbacks)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_SetTryCatchCallbacks,
+					       tryCatchCallbacks);
 }
 
 __STEAMAPI SteamPipeId
 GetHSteamPipe()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(GetHSteamPipe);
 	return 0;
 }
 
@@ -210,6 +260,7 @@ __STEAMAPI SteamUserId
 GetHSteamUser()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(GetHSteamUser);
 	return 0;
 }
 
@@ -217,9 +268,11 @@ __STEAMAPI SteamUserId
 SteamAPI_GetHSteamUser()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamAPI_GetHSteamUser);
 	return 0;
 }
 
+#if GAMESERVER_API
 __STEAMAPI bool
 SteamGameServer_InitSafe(uint32 ip,
 			 uint16 port,
@@ -231,6 +284,11 @@ SteamGameServer_InitSafe(uint32 ip,
 			 const char *versionString)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_InitSafe,
+					       ip, port, gamePort,
+					       spectatorPort, queryPort,
+					       serverMode, gameDir,
+					       versionString);
 	return true;
 }
 
@@ -245,53 +303,66 @@ SteamGameServer_Init(uint32 ip,
 		     const char *versionString)
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_Init,
+					       ip, port, gamePort,
+					       spectatorPort, queryPort,
+					       serverMode, gameDir,
+					       versionString);
 	return true;
 }
 
 __STEAMAPI ISteamGameServer *
 SteamGameServer() {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamGameServer);
 	return NULL;
 }
 
 __STEAMAPI ISteamUtils *
 SteamGameServerUtils() {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamUtils);
 	return NULL;
 }
 
 __STEAMAPI ISteamMasterServerUpdater *
 SteamMasterServerUpdater() {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamMasterServerUpdater);
 	return NULL;
 }
 
 __STEAMAPI ISteamNetworking *
 SteamGameServerNetworking() {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamNetworking);
 	return NULL;
 }
 
 __STEAMAPI ISteamGameServerStats *
 SteamGameServerStats() {
 	STUB();
+	REAL_CLASS_IF_IN_REAL_CALL(SteamGameServerStats);
 	return NULL;
 }
 
 __STEAMAPI void
 SteamGameServer_Shutdown() {
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_Shutdown);
 	STUB();
 }
 
 __STEAMAPI void
 SteamGameServer_RunCallbacks()
 {
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_RunCallbacks);
 	STUB();
 }
 
 __STEAMAPI bool
 SteamGameServer_BSecure() {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_BSecure);
 	return true;
 }
 
@@ -299,6 +370,7 @@ __STEAMAPI uint64
 SteamGameServer_GetSteamID()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_GetSteamID);
 	return 0;
 }
 
@@ -306,6 +378,7 @@ __STEAMAPI SteamPipeId
 SteamGameServer_GetHSteamPipe()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_GetHSteamPipe);
 	return 0;
 }
 
@@ -313,273 +386,64 @@ __STEAMAPI SteamUserId
 SteamGameServer_GetHSteamUser()
 {
 	STUB();
+	FUNCTION_FORWARD_AND_FINISH_IF_ENABLED(SteamGameServer_GetHSteamUser);
 	return 0;
 }
 
 __STEAMAPI ISteamClient *
 g_pSteamClientGameServer; // FIXME
+#endif
 
 void
 SteamAPI::hookInit()
 {
-	
-	
-	struct hook SteamAPI_Init_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_Init",
-		.hook_handle = (void*)SteamAPI_Init,
-		.version = -1
-	};
-
-	struct hook SteamAPI_Shutdown_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_Shutdown",
-		.hook_handle = (void*)SteamAPI_Shutdown,
-		.version = -1
-	};
-
-	struct hook SteamAPI_InitSafe_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_InitSafe",
-		.hook_handle = (void*)SteamAPI_InitSafe,
-		.version = -1
-	};
-
-	struct hook SteamAPI_IsSteamRunning_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_IsSteamRunning",
-		.hook_handle = (void*)SteamAPI_IsSteamRunning,
-		.version = -1
-	};
-
-	struct hook SteamAPI_RestartAppIfNecessary_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_RestartAppIfNecessary",
-		.hook_handle = (void*)SteamAPI_RestartAppIfNecessary,
-		.version = -1
-	};
-
-	struct hook SteamAPI_WriteMiniDump_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_WriteMiniDump",
-		.hook_handle = (void*)SteamAPI_WriteMiniDump,
-		.version = -1
-	};
-
-	struct hook SteamAPI_SetMiniDumpComment_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_SetMiniDumpComment",
-		.hook_handle = (void*)SteamAPI_SetMiniDumpComment,
-		.version = -1
-	};
-
-	struct hook SteamAPI_UseBreakpadCrashHandler_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_UseBreakpadCrashHandler",
-		.hook_handle = (void*)SteamAPI_UseBreakpadCrashHandler,
-		.version = -1
-	};
-
-	struct hook SteamClient_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamClient",
-		.hook_handle = (void*)SteamClient,
-		.version = -1
-	};
-
-	struct hook SteamUser_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamUser",
-		.hook_handle = (void*)SteamUser,
-		.version = -1
-	};
-
-	struct hook SteamFriends_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamFriends",
-		.hook_handle = (void*)SteamFriends,
-		.version = -1
-	};
-
-	struct hook SteamUtils_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamUtils",
-		.hook_handle = (void*)SteamUtils,
-		.version = -1
-	};
-
-	struct hook SteamMatchmaking_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamMatchmaking",
-		.hook_handle = (void*)SteamMatchmaking,
-		.version = -1
-	};
-
-	struct hook SteamUserStats_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamUserStats",
-		.hook_handle = (void*)SteamUserStats,
-		.version = -1
-	};
-
-	struct hook SteamApps_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamApps",
-		.hook_handle = (void*)SteamApps,
-		.version = -1
-	};
-
-	struct hook SteamNetworking_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamNetworking",
-		.hook_handle = (void*)SteamNetworking,
-		.version = -1
-	};
-
-	struct hook SteamMatchmakingServers_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamMatchmakingServers",
-		.hook_handle = (void*)SteamMatchmakingServers,
-		.version = -1
-	};
-
-	struct hook SteamRemoteStorage_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamRemoteStorage",
-		.hook_handle = (void*)SteamRemoteStorage,
-		.version = -1
-	};
-
-	struct hook SteamAPI_RunCallbacks_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_RunCallbacks",
-		.hook_handle = (void*)SteamAPI_RunCallbacks,
-		.version = -1
-	};
-
-	struct hook SteamAPI_RegisterCallback_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_RegisterCallback",
-		.hook_handle = (void*)SteamAPI_RegisterCallback,
-		.version = -1
-	};
-
-	struct hook SteamAPI_UnregisterCallback_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_UnregisterCallback",
-		.hook_handle = (void*)SteamAPI_UnregisterCallback,
-		.version = -1
-	};
-
-	struct hook SteamAPI_RegisterCallResult_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_RegisterCallResult",
-		.hook_handle = (void*)SteamAPI_RegisterCallResult,
-		.version = -1
-	};
-
-	struct hook SteamAPI_UnregisterCallResult_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_UnregisterCallResult",
-		.hook_handle = (void*)SteamAPI_UnregisterCallResult,
-		.version = -1
-	};
-
-	struct hook Steam_RunCallbacks_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "Steam_RunCallbacks",
-		.hook_handle = (void*)Steam_RunCallbacks,
-		.version = -1
-	};
-
-	struct hook Steam_RegisterInterfaceFuncs_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "Steam_RegisterInterfaceFuncs",
-		.hook_handle = (void*)Steam_RegisterInterfaceFuncs,
-		.version = -1
-	};
-
-	struct hook Steam_GetHSteamUserCurrent_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "Steam_GetHSteamUserCurrent",
-		.hook_handle = (void*)Steam_GetHSteamUserCurrent,
-		.version = -1
-	};
-
-	struct hook SteamAPI_GetSteamInstallPath_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_GetSteamInstallPath",
-		.hook_handle = (void*)SteamAPI_GetSteamInstallPath,
-		.version = -1
-	};
-
-	struct hook SteamAPI_GetHSteamPipe_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_GetHSteamPipe",
-		.hook_handle = (void*)SteamAPI_GetHSteamPipe,
-		.version = -1
-	};
-
-	struct hook SteamAPI_SetTryCatchCallbacks_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_SetTryCatchCallbacks",
-		.hook_handle = (void*)SteamAPI_SetTryCatchCallbacks,
-		.version = -1
-	};
-
-	struct hook GetHSteamPipe_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "GetHSteamPipe",
-		.hook_handle = (void*)GetHSteamPipe,
-		.version = -1
-	};
-
-	struct hook GetHSteamUser_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "GetHSteamUser",
-		.hook_handle = (void*)GetHSteamUser,
-		.version = -1
-	};
-
-	struct hook SteamAPI_GetHSteamUser_hook = {
-		.lib_name = "libsteam_api.so",
-		.symbol_name = "SteamAPI_GetHSteamUser",
-		.hook_handle = (void*)SteamAPI_GetHSteamUser,
-		.version = -1
-	};
-
-	register_hook(&SteamAPI_Init_hook);
-	register_hook(&SteamAPI_Shutdown_hook);
-	register_hook(&SteamAPI_InitSafe_hook);
-	register_hook(&SteamAPI_IsSteamRunning_hook);
-	register_hook(&SteamAPI_RestartAppIfNecessary_hook);
-	register_hook(&SteamAPI_WriteMiniDump_hook);
-	register_hook(&SteamAPI_SetMiniDumpComment_hook);
-	register_hook(&SteamAPI_UseBreakpadCrashHandler_hook);
-	register_hook(&SteamClient_hook);
-	register_hook(&SteamUser_hook);
-	register_hook(&SteamFriends_hook);
-	register_hook(&SteamUtils_hook);
-	register_hook(&SteamMatchmaking_hook);
-	register_hook(&SteamUserStats_hook);
-	register_hook(&SteamApps_hook);
-	register_hook(&SteamNetworking_hook);
-	register_hook(&SteamMatchmakingServers_hook);
-	register_hook(&SteamRemoteStorage_hook);
-	register_hook(&SteamAPI_RunCallbacks_hook);
-	register_hook(&SteamAPI_RegisterCallback_hook);
-	register_hook(&SteamAPI_UnregisterCallback_hook);
-	register_hook(&SteamAPI_RegisterCallResult_hook);
-	register_hook(&SteamAPI_UnregisterCallResult_hook);
-	register_hook(&Steam_RunCallbacks_hook);
-	register_hook(&Steam_RegisterInterfaceFuncs_hook);
-	register_hook(&Steam_GetHSteamUserCurrent_hook);
-	register_hook(&SteamAPI_GetSteamInstallPath_hook);
-	register_hook(&SteamAPI_GetHSteamPipe_hook);
-	register_hook(&SteamAPI_SetTryCatchCallbacks_hook);
-	register_hook(&GetHSteamPipe_hook);
-	register_hook(&GetHSteamUser_hook);
-	register_hook(&SteamAPI_GetHSteamUser_hook);
+	REGISTER_HOOK(SteamAPI_Init, bool (*)());
+	REGISTER_HOOK(SteamAPI_Shutdown, void (*)());
+	REGISTER_HOOK(SteamAPI_InitSafe, bool (*)());
+	REGISTER_HOOK(SteamAPI_IsSteamRunning, bool (*)());
+	REGISTER_HOOK(SteamAPI_RestartAppIfNecessary, bool (*)(uint32));
+	REGISTER_HOOK(SteamAPI_WriteMiniDump, void (*)(uint32, void *, uint32 ));
+	REGISTER_HOOK(SteamAPI_SetMiniDumpComment, void (*)(const char *));
+	REGISTER_HOOK(SteamAPI_UseBreakpadCrashHandler, void (*)(char const *, char const *, char const *));
+	REGISTER_HOOK(SteamClient, ISteamClient* (*)());
+	REGISTER_HOOK(SteamUser, ISteamUser* (*)());
+	REGISTER_HOOK(SteamFriends, ISteamFriends* (*)());
+	REGISTER_HOOK(SteamUtils, ISteamUtils* (*)());
+	REGISTER_HOOK(SteamMatchmaking, ISteamMatchmaking* (*)());
+	REGISTER_HOOK(SteamUserStats, ISteamUserStats* (*)());
+	REGISTER_HOOK(SteamApps, ISteamApps* (*)());
+	REGISTER_HOOK(SteamNetworking, ISteamNetworking* (*)());
+	REGISTER_HOOK(SteamMatchmakingServers, ISteamMatchmakingServers* (*)());
+	REGISTER_HOOK(SteamRemoteStorage, ISteamRemoteStorage* (*)());
+	REGISTER_HOOK(SteamAPI_RunCallbacks, void (*)());
+	REGISTER_HOOK(SteamAPI_RegisterCallback, void (*)(class CallbackBase*, int));
+	REGISTER_HOOK(SteamAPI_UnregisterCallback, void (*)(class CallbackBase*));
+	REGISTER_HOOK(SteamAPI_RegisterCallResult, void (*)(class CallbackBase*, SteamAPICall));
+	REGISTER_HOOK(SteamAPI_UnregisterCallResult, void (*)(class CallbackBase*, SteamAPICall));
+	REGISTER_HOOK(Steam_RunCallbacks, void (*)(SteamPipeId, bool));
+	REGISTER_HOOK(Steam_RegisterInterfaceFuncs, void (*)(void*));
+	REGISTER_HOOK(Steam_GetHSteamUserCurrent, SteamUserId (*)());
+	REGISTER_HOOK(SteamAPI_GetSteamInstallPath, const char* (*)());
+	REGISTER_HOOK(SteamAPI_GetHSteamPipe, SteamPipeId (*)());
+	REGISTER_HOOK(SteamAPI_SetTryCatchCallbacks, void (*)(bool));
+	REGISTER_HOOK(GetHSteamPipe, SteamPipeId (*)());
+	REGISTER_HOOK(GetHSteamUser, SteamUserId (*)());
+	REGISTER_HOOK(SteamAPI_GetHSteamUser, SteamUserId (*)());
+#if GAMESERVER_API
+	REGISTER_HOOK(SteamGameServer_InitSafe, bool (*)(uint32, uint16, uint16, uint16, uint16, ServerMode, const char *, const char));
+	REGISTER_HOOK(SteamGameServer_Init, bool (*)(uint32, uint16, uint16, uint16, uint16, ServerMode, const char *, const char));
+	REGISTER_HOOK(SteamGameServer, ISteamGameServer* (*)());
+	REGISTER_HOOK(SteamGameServerUtils, ISteamUtils* (*)());
+	REGISTER_HOOK(SteamMasterServerUpdater, ISteamMasterServerUpdater* (*)());
+	REGISTER_HOOK(SteamGameServerNetworking, ISteamNetworking* (*)());
+	REGISTER_HOOK(SteamGameServerStats, ISteamGameServerStats* (*)());
+	REGISTER_HOOK(SteamGameServer_Shutdown, void (*)());
+	REGISTER_HOOK(SteamGameServer_RunCallbacks, void (*)());
+	REGISTER_HOOK(SteamGameServer_BSecure, bool (*)());
+	REGISTER_HOOK(SteamGameServer_GetSteamID, uint64 (*)());
+	REGISTER_HOOK(SteamGameServer_GetHSteamPipe, SteamPipeId (*)());
+	REGISTER_HOOK(SteamGameServer_GetHSteamUser, SteamUserId (*)());
+#endif
 }
 
 void
@@ -673,3 +537,7 @@ SteamAPI::SteamRemoteStorage()
 	return static_cast<ISteamRemoteStorage*>(
 		&CSteamRemoteStorage::getInstance());
 }
+
+SteamAPI::RealSteamAPI SteamAPI::real;
+
+int SteamAPIRealCounter::mCounter = 0;

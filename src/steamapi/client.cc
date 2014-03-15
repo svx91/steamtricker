@@ -1,3 +1,5 @@
+#include <string>
+
 #include "user.h"
 #include "userstats.h"
 #include "friends.h"
@@ -8,24 +10,30 @@
 #include "remotestorage.h"
 #include "gameserver.h"
 #include "masterserverupdater.h"
+#include "api.h"
 
 #include "client.h"
 
 SteamPipeId CSteamClient::CreateSteamPipe()
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, CreateSteamPipe);
 	return 0;
 }
 
 bool CSteamClient::BReleaseSteamPipe(SteamPipeId steamPipe)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, BReleaseSteamPipe,
+					     steamPipe);
 	return true;
 }
 
 SteamUserId CSteamClient::ConnectToGlobalUser(SteamPipeId steamPipe)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, ConnectToGlobalUser,
+					     steamPipe);
 	return 0;
 }
 
@@ -33,12 +41,16 @@ SteamUserId CSteamClient::CreateLocalUser(SteamPipeId *steamPipe,
 					AccountType accountType)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, CreateLocalUser,
+					     steamPipe, accountType);
 	return 0;
 }
 
 void CSteamClient::ReleaseUser(SteamPipeId steamPipe, SteamUserId user)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, ReleaseUser,
+					     steamPipe, user);
 }
 
 ISteamUser *CSteamClient::GetISteamUser(SteamUserId steamUser,
@@ -60,6 +72,8 @@ ISteamGameServer *CSteamClient::GetISteamGameServer(SteamUserId steamUser,
 void CSteamClient::SetLocalIPBinding(uint32 ip, uint16 port)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, SetLocalIPBinding,
+					     ip, port);
 }
 
 ISteamFriends *CSteamClient::GetISteamFriends(SteamUserId steamUser,
@@ -108,6 +122,48 @@ void *CSteamClient::GetISteamGenericInterface(
 		const char *version)
 {
 	STUB();
+
+	std::string interface(version);
+	if(interface.find("STEAMUSERSTATS") != std::string::npos) {
+		return GetISteamUserStats(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMUSER") != std::string::npos) {
+		return GetISteamUser(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMGAMESERVERSTATS") != std::string::npos) {
+		return GetISteamGameServerStats(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMGAMESERVER") != std::string::npos) {
+		return GetISteamGameServer(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMFRIENDS") != std::string::npos) {
+		return GetISteamFriends(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMUTILS") != std::string::npos) {
+		return GetISteamUtils(steamPipe, version);
+	}
+	else if(interface.find("STEAMMATCHMAKINGSERVERS") != std::string::npos) {
+		return GetISteamMatchmakingServers(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMMATCHMAKING") != std::string::npos) {
+		return GetISteamMatchmaking(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMMASTERSERVERUPDATER") != std::string::npos) {
+		return GetISteamMasterServerUpdater(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMAPPS") != std::string::npos) {
+		return GetISteamApps(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMNETWORKING") != std::string::npos) {
+		return GetISteamNetworking(steamUser, steamPipe, version);
+	}
+	else if(interface.find("STEAMREMOTESTORAGE") != std::string::npos) {
+		return GetISteamRemoteStorage(steamUser, steamPipe, version);
+	}
+	else {
+		LOG("unhandled GetISteamGenericInterface %s", version);
+	}
+
 	return NULL;
 }
 
@@ -159,16 +215,20 @@ ISteamRemoteStorage *CSteamClient::GetISteamRemoteStorage(
 void CSteamClient::RunFrame()
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, RunFrame);
 }
 
 uint32 CSteamClient::GetIPCCallCount()
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, GetIPCCallCount);
 	return 0;
 }
 
 void CSteamClient::SetWarningMessageHook(SteamAPIWarningMessageHook function)
 {
 	STUB();
+	METHOD_FORWARD_AND_FINISH_IF_ENABLED(SteamClient, SetWarningMessageHook,
+					     function);
 }
 
